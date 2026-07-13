@@ -23,7 +23,7 @@
 <meta property="twitter:title" content="Solved / Advanced — OLL &amp; PLL Trainer">
 <meta property="twitter:description" content="Master the Rubik's Cube CFOP method. Train all 57 OLL and 21 PLL algorithms with interactive scrambles, live timers, and detailed visual cube state diagrams.">
 <meta property="twitter:image" content="https://solvedalg.vercel.app/logo.png">
-<meta name="google-site-verification" content="B_3aWoAWgTkIFUEoJny6BvcITR8rD2dAwVw8vuKXYWg" />
+
 <!-- JSON-LD WebApplication Structured Data -->
 <script type="application/ld+json">
 {
@@ -272,6 +272,138 @@
 
   footer{padding:48px 24px 60px; max-width:1180px; margin:0 auto; color:var(--muted); font-size:13px;
     display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; border-top:1px solid var(--line);}
+
+  /* ---- Modal Styles ---- */
+  .modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(10, 10, 12, 0.85);
+    backdrop-filter: blur(8px);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+  .modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .modal-content {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    width: 90%;
+    max-width: 640px;
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 32px;
+    position: relative;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    transform: scale(0.95);
+    transition: transform 0.25s ease;
+  }
+  .modal-overlay.active .modal-content {
+    transform: scale(1);
+  }
+  .modal-close {
+    position: absolute;
+    top: 20px; right: 20px;
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 20px;
+    font-weight: bold;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: color 0.15s, background 0.15s;
+  }
+  .modal-close:hover {
+    color: var(--ink);
+    background: var(--line);
+  }
+  .modal-content h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 24px;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 12px;
+    color: var(--accent);
+  }
+  .modal-content p, .modal-content li {
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--ink);
+  }
+  .modal-content ul {
+    padding-left: 20px;
+    margin-bottom: 16px;
+  }
+  .modal-content section {
+    margin-bottom: 24px;
+  }
+  .modal-content h3 {
+    font-size: 18px;
+    margin-top: 20px;
+    margin-bottom: 8px;
+    color: var(--ink);
+  }
+
+  /* ---- Guide Styles ---- */
+  .guide-section {
+    margin-top: 56px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 32px;
+  }
+  .guide-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    margin-top: 24px;
+  }
+  .guide-col h3 {
+    font-size: 18px;
+    color: var(--accent);
+    margin-top: 0;
+    margin-bottom: 12px;
+  }
+  .guide-col p {
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: var(--muted);
+    margin: 0 0 14px 0;
+  }
+  .guide-col ul {
+    margin: 0;
+    padding-left: 20px;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .guide-col li {
+    margin-bottom: 8px;
+    line-height: 1.5;
+  }
+  .footer-links {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .footer-links a {
+    cursor: pointer;
+    transition: color 0.15s;
+  }
+  .footer-links a:hover {
+    color: var(--accent);
+    text-decoration: underline;
+  }
 </style>
 </head>
 <body>
@@ -315,6 +447,41 @@
           <div class="kicker">Reference</div>
           <h3>Algorithms</h3>
           <p>Every one of the 57 OLL and 21 PLL algorithms, grouped and searchable, written in standard notation with color-coded moves.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="guide-section">
+      <h2>CFOP Method: A Complete Speedcubing Guide</h2>
+      <p>The CFOP method (Cross, F2L, OLL, PLL), sometimes known as the Fridrich method, is the most popular advanced strategy for solving the 3x3x3 Rubik's Cube. By breaking down the solve into structured stages, cubers can achieve solve times under 10 seconds.</p>
+      
+      <div class="guide-grid">
+        <div class="guide-col">
+          <h3>1. The Four Stages of CFOP</h3>
+          <p>CFOP divides the solve into four distinct, linear phases, each requiring different skills:</p>
+          <ul>
+            <li><strong>Cross (C):</strong> Solve the four edge pieces of the bottom layer to form a cross. This is done intuitively and should take fewer than 8 moves.</li>
+            <li><strong>First Two Layers (F2L):</strong> Solve the bottom layer corners and middle layer edges simultaneously. This reduces the step count and eliminates redundant moves.</li>
+            <li><strong>Orientation of Last Layer (OLL):</strong> Orient the top layer pieces so that the top face is a solid color. There are 57 OLL cases to memorize.</li>
+            <li><strong>Permutation of Last Layer (PLL):</strong> Permute the top layer pieces to their correct locations. There are 21 PLL cases to memorize.</li>
+          </ul>
+        </div>
+        
+        <div class="guide-col">
+          <h3>2. Case Recognition vs. Muscle Memory</h3>
+          <p>Solving a case quickly is a balance of visual recognition and physical execution:</p>
+          <p><strong>Recognition:</strong> When you finish a step, you must scan the remaining layout and identify which algorithm to apply. Efficient recognition requires looking for patterns, blocks, and headlights without rotating the whole cube.</p>
+          <p><strong>Execution:</strong> Once recognized, your hands should execute the algorithm automatically using "finger tricks"—optimized finger movements that avoid regripping the cube.</p>
+        </div>
+        
+        <div class="guide-col">
+          <h3>3. How to Practice Effectively</h3>
+          <p>To improve your speed, do not try to learn all algorithms at once. Follow these steps:</p>
+          <ul>
+            <li><strong>Group cases:</strong> Learn one subset at a time (e.g., OLL T-shapes or PLL corners-only).</li>
+            <li><strong>Use scrambles:</strong> The trainer provides custom setup scrambles. Execute the scramble, try to recognize the case, and execute the solution without looking.</li>
+            <li><strong>Focus on accuracy:</strong> Drill slowly at first. Smooth, lockup-free execution is always faster than fast but clumsy movements.</li>
+          </ul>
         </div>
       </div>
     </div>
@@ -388,6 +555,13 @@
 
 <footer>
   <span>Solved / Advanced — recognition first, speed second.</span>
+  <div class="footer-links">
+    <a id="link-privacy">Privacy Policy</a>
+    <span>·</span>
+    <a id="link-terms">Terms of Service</a>
+    <span>·</span>
+    <a id="link-about">About &amp; Contact</a>
+  </div>
   <span>57 OLL · 21 PLL · one trainer.</span>
 </footer>
 
@@ -841,6 +1015,48 @@ document.getElementById('algs-search').addEventListener('input', e=>{
 });
 
 /* ============================================================
+   MODALS UTILITY
+   ============================================================ */
+function setupModal(triggerId, modalId) {
+  const trigger = document.getElementById(triggerId);
+  const modal = document.getElementById(modalId);
+  if (!trigger || !modal) return;
+  
+  const closeBtn = modal.querySelector('.modal-close');
+  
+  trigger.addEventListener('click', (e) => {
+    e.preventDefault();
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  });
+  
+  const closeModal = () => {
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+  };
+  
+  if (closeBtn) {
+    closeBtn.addEventListener('click', closeModal);
+  }
+  
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      closeModal();
+    }
+  });
+  
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.classList.contains('active')) {
+      closeModal();
+    }
+  });
+}
+
+setupModal('link-privacy', 'modal-privacy');
+setupModal('link-terms', 'modal-terms');
+setupModal('link-about', 'modal-about');
+
+/* ============================================================
    INIT
    ============================================================ */
 renderCasePicker();
@@ -848,6 +1064,64 @@ resetTrainerDisplay();
 renderStats();
 renderAlgsList();
 </script>
+
+<!-- ================= MODALS ================= -->
+<div class="modal-overlay" id="modal-privacy" role="dialog" aria-modal="true" aria-labelledby="privacy-title">
+  <div class="modal-content">
+    <button class="modal-close" aria-label="Close modal">&times;</button>
+    <h2 id="privacy-title">Privacy Policy</h2>
+    <p>Last updated: July 13, 2026</p>
+    <section>
+      <h3>1. Information We Collect</h3>
+      <p>Solved / Advanced does not collect or store any personal user information. Your setting selections, training configurations, and practice solve history are saved locally in your browser's Web Storage (localStorage) and never transmitted to our servers.</p>
+    </section>
+    <section>
+      <h3>2. Google AdSense & Cookies</h3>
+      <p>We use Google AdSense to serve advertisements. Google, as a third-party vendor, uses cookies to serve ads on this website. Google's use of advertising cookies enables it and its partners to serve ads to our users based on their visit to our site or other sites on the Internet.</p>
+      <p>Users may opt out of personalized advertising by visiting Google's <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">Ads Settings</a> page.</p>
+    </section>
+    <section>
+      <h3>3. Log Files</h3>
+      <p>Like many other websites, our hosting provider may collect basic connection log files (IP addresses, browser type, referring pages). These are standard server operations used strictly for site performance monitoring and threat prevention.</p>
+    </section>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-terms" role="dialog" aria-modal="true" aria-labelledby="terms-title">
+  <div class="modal-content">
+    <button class="modal-close" aria-label="Close modal">&times;</button>
+    <h2 id="terms-title">Terms of Service</h2>
+    <p>Last updated: July 13, 2026</p>
+    <section>
+      <h3>1. Acceptance of Terms</h3>
+      <p>By accessing and using Solved / Advanced, you agree to comply with and be bound by these Terms of Service. If you do not agree, please do not use the tool.</p>
+    </section>
+    <section>
+      <h3>2. Use of Service</h3>
+      <p>This web application is provided as a free educational practice trainer for speedcubing algorithms. You agree to use the site responsibly and not attempt to scrap, reverse engineer, or flood the server resources.</p>
+    </section>
+    <section>
+      <h3>3. Disclaimer of Warranties</h3>
+      <p>Solved / Advanced is provided "as is" and "as available" without any warranties of any kind, either express or implied, including the accuracy of algorithms, timer accuracy, or continuous uptime.</p>
+    </section>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-about" role="dialog" aria-modal="true" aria-labelledby="about-title">
+  <div class="modal-content">
+    <button class="modal-close" aria-label="Close modal">&times;</button>
+    <h2 id="about-title">About & Contact</h2>
+    <section>
+      <h3>About Solved / Advanced</h3>
+      <p>Solved / Advanced is an interactive web-based trainer designed for speedcubers looking to master the advanced CFOP (Fridrich) method. We provide visual guides, customizable practice sets, and detailed statistics to drill OLL (Orientation of the Last Layer) and PLL (Permutation of the Last Layer) cases in isolation.</p>
+    </section>
+    <section>
+      <h3>Contact Us</h3>
+      <p>If you have any feedback, questions, or would like to report incorrect algorithm notations, please feel free to reach out to us:</p>
+      <p><strong>Email:</strong> support@solvedalg.vercel.app</p>
+    </section>
+  </div>
+</div>
 
 </body>
 </html>
