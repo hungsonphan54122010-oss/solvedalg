@@ -3,8 +3,40 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="google-site-verification" content="B_3aWoAWgTkIFUEoJny6BvcITR8rD2dAwVw8vuKXYWg" />
 <title>Solved / Advanced — OLL &amp; PLL Trainer</title>
+<meta name="description" content="Master the Rubik's Cube CFOP method. Train all 57 OLL and 21 PLL algorithms with interactive scrambles, live timers, and detailed visual cube state diagrams.">
+<meta name="keywords" content="Rubik's cube, CFOP method, OLL trainer, PLL trainer, speedcubing, algorithms, OLL cases, PLL cases, cubing timer">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://solvedalg.vercel.app/">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://solvedalg.vercel.app/">
+<meta property="og:title" content="Solved / Advanced — OLL &amp; PLL Trainer">
+<meta property="og:description" content="Master the Rubik's Cube CFOP method. Train all 57 OLL and 21 PLL algorithms with interactive scrambles, live timers, and detailed visual cube state diagrams.">
+<meta property="og:image" content="https://solvedalg.vercel.app/logo.png">
+<meta property="og:site_name" content="Solved / Advanced">
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://solvedalg.vercel.app/">
+<meta property="twitter:title" content="Solved / Advanced — OLL &amp; PLL Trainer">
+<meta property="twitter:description" content="Master the Rubik's Cube CFOP method. Train all 57 OLL and 21 PLL algorithms with interactive scrambles, live timers, and detailed visual cube state diagrams.">
+<meta property="twitter:image" content="https://solvedalg.vercel.app/logo.png">
+<meta name="google-site-verification" content="B_3aWoAWgTkIFUEoJny6BvcITR8rD2dAwVw8vuKXYWg" />
+<!-- JSON-LD WebApplication Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Solved / Advanced — OLL & PLL Trainer",
+  "description": "Master the Rubik's Cube CFOP method. Train all 57 OLL and 21 PLL algorithms with interactive scrambles, live timers, and detailed visual cube state diagrams.",
+  "url": "https://solvedalg.vercel.app/",
+  "applicationCategory": "EducationalApplication",
+  "operatingSystem": "All",
+  "browserRequirements": "Requires JavaScript. Requires HTML5."
+}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <style>
@@ -31,6 +63,17 @@
   body{
     margin:0; background:var(--bg); color:var(--ink);
     font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased;
+  }
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
   }
   h1,h2,h3,.display{ font-family:'Space Grotesk',sans-serif; letter-spacing:-0.01em; }
   .mono, code{ font-family:'JetBrains Mono',monospace; }
@@ -230,27 +273,24 @@
   footer{padding:48px 24px 60px; max-width:1180px; margin:0 auto; color:var(--muted); font-size:13px;
     display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; border-top:1px solid var(--line);}
 </style>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9475357605728707"
-     crossorigin="anonymous">
-  </script>
 </head>
 <body>
 
-<div class="topbar">
+<header class="topbar">
   <div class="topbar-inner">
     <div class="logo"><div class="logo-mark"></div>Solved<span class="tier">/ Advanced</span></div>
-    <div class="top-nav" id="top-nav">
-      <button data-tab="home" class="active">Home</button>
-      <button data-tab="practice">Practice</button>
-      <button data-tab="algorithms">Algorithms</button>
-    </div>
+    <nav class="top-nav" id="top-nav" role="tablist" aria-label="Main Navigation">
+      <button id="nav-btn-home" role="tab" data-tab="home" class="active" aria-selected="true" aria-controls="tab-home">Home</button>
+      <button id="nav-btn-practice" role="tab" data-tab="practice" aria-selected="false" aria-controls="tab-practice">Practice</button>
+      <button id="nav-btn-algorithms" role="tab" data-tab="algorithms" aria-selected="false" aria-controls="tab-algorithms">Algorithms</button>
+    </nav>
   </div>
-</div>
+</header>
 
 <main>
 
   <!-- ================= HOME ================= -->
-  <section class="tab-panel active" id="tab-home">
+  <section class="tab-panel active" id="tab-home" role="tabpanel" aria-labelledby="nav-btn-home">
     <div class="hero">
       <div class="eyebrow"><span class="dot"></span>For solvers past the beginner method</div>
       <h1>Full CFOP.<br>Every case, on demand.</h1>
@@ -281,7 +321,8 @@
   </section>
 
   <!-- ================= PRACTICE ================= -->
-  <section class="tab-panel" id="tab-practice">
+  <section class="tab-panel" id="tab-practice" role="tabpanel" aria-labelledby="nav-btn-practice">
+    <h1 class="sr-only">Interactive CFOP Practice Trainer</h1>
     <div class="practice-shell">
       <div class="sub-tabs" id="practice-subtabs">
         <button class="sub-tab-btn active" data-set="OLL">OLL Trainer</button>
@@ -329,7 +370,8 @@
   </section>
 
   <!-- ================= ALGORITHMS ================= -->
-  <section class="tab-panel" id="tab-algorithms">
+  <section class="tab-panel" id="tab-algorithms" role="tabpanel" aria-labelledby="nav-btn-algorithms">
+    <h1 class="sr-only">CFOP OLL and PLL Algorithm Reference Sheet</h1>
     <div class="algs-shell">
       <div class="sub-tabs" id="algs-subtabs">
         <button class="sub-tab-btn active" data-set="OLL">OLL — 57 cases</button>
@@ -485,8 +527,38 @@ document.querySelectorAll('[data-goto]').forEach(el=>{
   el.addEventListener('click', ()=> setActiveTab(el.dataset.goto));
 });
 function setActiveTab(tab){
-  document.querySelectorAll('.top-nav button').forEach(b=> b.classList.toggle('active', b.dataset.tab===tab));
+  document.querySelectorAll('.top-nav button').forEach(b=> {
+    const active = b.dataset.tab===tab;
+    b.classList.toggle('active', active);
+    b.setAttribute('aria-selected', active ? 'true' : 'false');
+  });
   document.querySelectorAll('.tab-panel').forEach(p=> p.classList.toggle('active', p.id === 'tab-'+tab));
+  
+  let title = "Solved / Advanced — OLL & PLL Trainer";
+  let description = "Master the Rubik's Cube CFOP method. Train all 57 OLL and 21 PLL algorithms with interactive scrambles, live timers, and detailed visual cube state diagrams.";
+  
+  if (tab === 'practice') {
+    title = "Practice CFOP OLL & PLL Cases — Solved / Advanced";
+    description = "Drill 57 OLL and 21 PLL cases in isolation. Get custom cube scrambles, track your solve times, and analyze your speed stats.";
+  } else if (tab === 'algorithms') {
+    title = "CFOP OLL & PLL Algorithm Reference — Solved / Advanced";
+    description = "Browse the complete database of 57 OLL and 21 PLL speedcubing algorithms, complete with interactive 2D visual cube states.";
+  }
+  
+  document.title = title;
+  const metaDesc = document.querySelector('meta[name="description"]');
+  if(metaDesc) metaDesc.setAttribute('content', description);
+  
+  const ogTitle = document.querySelector('meta[property="og:title"]');
+  if(ogTitle) ogTitle.setAttribute('content', title);
+  const ogDesc = document.querySelector('meta[property="og:description"]');
+  if(ogDesc) ogDesc.setAttribute('content', description);
+  
+  const twTitle = document.querySelector('meta[property="twitter:title"]');
+  if(twTitle) twTitle.setAttribute('content', title);
+  const twDesc = document.querySelector('meta[property="twitter:description"]');
+  if(twDesc) twDesc.setAttribute('content', description);
+
   window.scrollTo({top:0, behavior:'smooth'});
 }
 
@@ -545,9 +617,11 @@ function renderCasePicker(){
   const actions = document.createElement('div');
   actions.className = 'picker-actions';
   const allBtn = document.createElement('button');
+  allBtn.id = 'btn-select-all';
   allBtn.className = 'link-btn'; allBtn.textContent = 'Select all';
   allBtn.onclick = ()=>{ selected[practiceSet] = new Set(cases.map(c=>caseKey(c,practiceSet))); saveSelection(practiceSet); renderCasePicker(); };
   const noneBtn = document.createElement('button');
+  noneBtn.id = 'btn-select-none';
   noneBtn.className = 'link-btn'; noneBtn.textContent = 'Select none';
   noneBtn.onclick = ()=>{ selected[practiceSet] = new Set(); saveSelection(practiceSet); renderCasePicker(); };
   actions.appendChild(allBtn); actions.appendChild(noneBtn);
