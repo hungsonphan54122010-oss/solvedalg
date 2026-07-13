@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solved / Advanced — OLL &amp; PLL Trainer</title>
+<meta name="description" content="Master the Rubik's Cube CFOP method. Train all 57 OLL and 21 PLL algorithms with interactive scrambles, live timers, and detailed visual cube state diagrams.">
+<meta name="keywords" content="Rubik's cube, CFOP method, OLL trainer, PLL trainer, speedcubing, algorithms, OLL cases, PLL cases, cubing timer">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://solvedalg.vercel.app/">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://solvedalg.vercel.app/">
+<meta property="og:title" content="Solved / Advanced — OLL &amp; PLL Trainer">
+<meta property="og:description" content="Master the Rubik's Cube CFOP method. Train all 57 OLL and 21 PLL algorithms with interactive scrambles, live timers, and detailed visual cube state diagrams.">
+<meta property="og:image" content="https://solvedalg.vercel.app/logo.png">
+<meta property="og:site_name" content="Solved / Advanced">
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://solvedalg.vercel.app/">
+<meta property="twitter:title" content="Solved / Advanced — OLL &amp; PLL Trainer">
+<meta property="twitter:description" content="Master the Rubik's Cube CFOP method. Train all 57 OLL and 21 PLL algorithms with interactive scrambles, live timers, and detailed visual cube state diagrams.">
+<meta property="twitter:image" content="https://solvedalg.vercel.app/logo.png">
+
+<!-- JSON-LD WebApplication Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Solved / Advanced — OLL & PLL Trainer",
+  "description": "Master the Rubik's Cube CFOP method. Train all 57 OLL and 21 PLL algorithms with interactive scrambles, live timers, and detailed visual cube state diagrams.",
+  "url": "https://solvedalg.vercel.app/",
+  "applicationCategory": "EducationalApplication",
+  "operatingSystem": "All",
+  "browserRequirements": "Requires JavaScript. Requires HTML5."
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#15161B;
+    --panel:#1C1E26;
+    --panel-2:#23252F;
+    --ink:#F2F1ED;
+    --muted:#8B8D98;
+    --line:#2B2D38;
+    --accent:#F5B942;
+    --accent-dim:#3A2F17;
+
+    --c-white:#F2F1ED;
+    --c-yellow:#F5C518;
+    --c-red:#D4453A;
+    --c-orange:#E8720C;
+    --c-blue:#3B7DE8;
+    --c-green:#22A35E;
+    --c-neutral:#5B5D68;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased;
+  }
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+  h1,h2,h3,.display{ font-family:'Space Grotesk',sans-serif; letter-spacing:-0.01em; }
+  .mono, code{ font-family:'JetBrains Mono',monospace; }
+  a{color:inherit;}
+  button{font-family:'Inter',sans-serif;}
+
+  /* ---- top bar ---- */
+  .topbar{
+    position:sticky; top:0; z-index:50;
+    background:rgba(21,22,27,0.92); backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .topbar-inner{
+    max-width:1180px; margin:0 auto; padding:16px 24px;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .logo{display:flex; align-items:center; gap:10px; font-weight:700; font-size:18px;}
+  .logo-mark{
+    width:20px;height:20px;border-radius:4px;
+    background:linear-gradient(135deg, var(--c-red) 0 50%, var(--accent) 50% 100%);
+    box-shadow: inset 0 0 0 1.5px rgba(0,0,0,0.25);
+  }
+  .logo .tier{ color:var(--muted); font-weight:500; font-size:13px; margin-left:2px;}
+  .top-nav{display:flex; gap:4px; background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:4px;}
+  .top-nav button{
+    border:none; background:transparent; color:var(--muted); font-size:14px; font-weight:600;
+    padding:8px 16px; border-radius:7px; cursor:pointer; transition:background .15s, color .15s;
+  }
+  .top-nav button.active{ background:var(--accent); color:#1A1305; }
+  .top-nav button:not(.active):hover{ color:var(--ink); }
+
+  main{max-width:1180px; margin:0 auto; padding:0 24px 100px;}
+  .tab-panel{display:none;}
+  .tab-panel.active{display:block;}
+
+  /* ================= HOME ================= */
+  .hero{padding:72px 0 48px; border-bottom:1px solid var(--line);}
+  .eyebrow{
+    font-size:13px; color:var(--accent); font-weight:600; text-transform:uppercase;
+    letter-spacing:0.08em; display:flex; align-items:center; gap:8px; margin-bottom:18px;
+  }
+  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);}
+  .hero h1{ font-size:clamp(34px,5vw,54px); line-height:1.06; margin:0 0 20px; font-weight:700; }
+  .hero p{ font-size:17px; color:var(--muted); max-width:540px; line-height:1.65; margin:0 0 28px; }
+  .hero-ctas{display:flex; gap:12px; flex-wrap:wrap;}
+  .btn{
+    font-weight:600; font-size:14px; padding:12px 20px; border-radius:8px; text-decoration:none;
+    display:inline-block; cursor:pointer; border:1px solid transparent;
+  }
+  .btn-primary{background:var(--accent); color:#1A1305;}
+  .btn-secondary{background:transparent; color:var(--ink); border-color:var(--line);}
+
+  .stat-row{display:flex; gap:14px; flex-wrap:wrap; margin-top:52px;}
+  .stat-card{
+    background:var(--panel); border:1px solid var(--line); border-radius:12px;
+    padding:20px 22px; min-width:140px; flex:1;
+  }
+  .stat-num{font-family:'Space Grotesk',sans-serif; font-size:32px; font-weight:700; color:var(--accent);}
+  .stat-label{font-size:12.5px; color:var(--muted); margin-top:4px;}
+
+  .home-section{padding:56px 0; border-bottom:1px solid var(--line);}
+  .home-section h2{font-size:26px; margin:0 0 10px;}
+  .home-section > p{color:var(--muted); max-width:600px; line-height:1.65; margin:0 0 30px; font-size:15px;}
+  .path-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px;}
+  .path-card{
+    background:var(--panel); border:1px solid var(--line); border-radius:14px;
+    padding:26px; cursor:pointer; transition:border-color .15s, transform .15s;
+  }
+  .path-card:hover{border-color:var(--accent); transform:translateY(-2px);}
+  .path-card .kicker{ font-size:11.5px; text-transform:uppercase; letter-spacing:0.07em; color:var(--accent); font-weight:700; margin-bottom:12px;}
+  .path-card h3{font-size:19px; margin:0 0 8px;}
+  .path-card p{font-size:14px; color:var(--muted); line-height:1.6; margin:0;}
+
+  /* ================= SHARED: move pills ================= */
+  .pill{
+    font-family:'JetBrains Mono',monospace; font-size:13px; font-weight:700;
+    padding:5px 9px; border-radius:6px; border:1px solid rgba(0,0,0,0.25); color:#111;
+  }
+  .pill.wide{ font-style:italic; box-shadow: inset 0 0 0 1.5px rgba(255,255,255,0.35); }
+  .pill.neutral{ background:var(--c-neutral); color:#fff; border-color:rgba(255,255,255,0.15); }
+  .alg-row{display:flex; flex-wrap:wrap; gap:6px; align-items:center;}
+
+  /* ================= PRACTICE ================= */
+  .practice-shell{padding:48px 0;}
+  .sub-tabs{display:flex; gap:8px; margin-bottom:28px;}
+  .sub-tab-btn{
+    border:1px solid var(--line); background:var(--panel); color:var(--muted);
+    font-weight:600; font-size:14px; padding:10px 22px; border-radius:9px; cursor:pointer;
+  }
+  .sub-tab-btn.active{ background:var(--accent-dim); color:var(--accent); border-color:var(--accent); }
+
+  .practice-grid{display:grid; grid-template-columns:340px 1fr; gap:24px;}
+  @media (max-width:860px){ .practice-grid{grid-template-columns:1fr;} }
+
+  .case-picker{
+    background:var(--panel); border:1px solid var(--line); border-radius:14px;
+    padding:18px; max-height:640px; overflow-y:auto;
+  }
+  .picker-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;}
+  .picker-head span{font-size:13px; color:var(--muted); font-weight:600;}
+  .picker-actions{display:flex; gap:8px;}
+  .link-btn{
+    background:none; border:none; color:var(--accent); font-size:12.5px; font-weight:600; cursor:pointer; padding:0;
+  }
+  .group-label{
+    font-size:11px; text-transform:uppercase; letter-spacing:0.06em; color:var(--muted);
+    margin:16px 0 8px; font-weight:700;
+  }
+  .group-label:first-child{margin-top:0;}
+  .case-chip-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(64px,1fr)); gap:6px;}
+  .case-chip{
+    border:1px solid var(--line); background:var(--panel-2); color:var(--muted);
+    border-radius:8px; padding:8px 4px; font-size:12px; font-weight:700; text-align:center;
+    cursor:pointer; font-family:'JetBrains Mono',monospace; user-select:none;
+  }
+  .case-chip.selected{ background:var(--accent-dim); color:var(--accent); border-color:var(--accent); }
+
+  .trainer-panel{
+    background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:32px;
+    display:flex; flex-direction:column; align-items:center; text-align:center; gap:22px;
+  }
+  .trainer-img-wrapper{
+    display:flex; justify-content:center; align-items:center;
+    width:120px; height:120px; background:#ffffff;
+    border:1px solid var(--line); border-radius:12px; padding:8px;
+    margin:-6px 0 -6px 0;
+  }
+  .trainer-img-wrapper img{
+    width:100%; height:100%; object-fit:contain;
+  }
+  .trainer-case-label{font-size:13px; color:var(--muted); font-weight:600;}
+  .trainer-case-name{font-family:'Space Grotesk',sans-serif; font-size:26px; font-weight:700;}
+  .scramble-box{
+    background:var(--panel-2); border:1px solid var(--line); border-radius:12px;
+    padding:20px 24px; width:100%; display:flex; justify-content:center;
+  }
+  .scramble-box .alg-row{justify-content:center;}
+  .timer-display{
+    font-family:'JetBrains Mono',monospace; font-size:56px; font-weight:700; color:var(--accent);
+    letter-spacing:-0.01em; font-variant-numeric:tabular-nums;
+  }
+  .trainer-controls{display:flex; gap:10px; flex-wrap:wrap; justify-content:center;}
+  .tbtn{
+    border-radius:9px; padding:12px 22px; font-weight:600; font-size:14px; cursor:pointer; border:1px solid var(--line);
+    background:var(--panel-2); color:var(--ink);
+  }
+  .tbtn.primary{background:var(--accent); color:#1A1305; border-color:var(--accent);}
+  .solution-reveal{
+    width:100%; border-top:1px solid var(--line); padding-top:18px;
+    display:flex; flex-direction:column; align-items:center; gap:10px;
+  }
+  .solution-reveal .alg-row{justify-content:center;}
+  .blur-hint{ filter:blur(6px); user-select:none; transition:filter .2s; }
+  .blur-hint.revealed{ filter:none; }
+
+  .stats-row{display:flex; gap:14px; width:100%; flex-wrap:wrap;}
+  .stat-mini{ flex:1; min-width:100px; background:var(--panel-2); border:1px solid var(--line); border-radius:10px; padding:14px; }
+  .stat-mini .n{font-family:'JetBrains Mono',monospace; font-size:20px; font-weight:700; color:var(--accent);}
+  .stat-mini .l{font-size:11px; color:var(--muted); margin-top:2px;}
+
+  /* ================= ALGORITHMS ================= */
+  .algs-shell{padding:48px 0;}
+  .algs-toolbar{display:flex; gap:12px; align-items:center; margin-bottom:28px; flex-wrap:wrap;}
+  .search-input{
+    flex:1; min-width:220px; background:var(--panel); border:1px solid var(--line); border-radius:9px;
+    padding:11px 16px; color:var(--ink); font-size:14px; font-family:'Inter',sans-serif;
+  }
+  .search-input::placeholder{color:var(--muted);}
+  .algs-group{margin-bottom:36px;}
+  .algs-group-title{
+    font-size:12px; text-transform:uppercase; letter-spacing:0.07em; color:var(--accent);
+    font-weight:700; margin-bottom:14px;
+  }
+  .algs-list{display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:12px;}
+  .alg-card{
+    background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:16px 18px;
+  }
+  .alg-card-wrapper{
+    display:flex; gap:14px; align-items:center;
+  }
+  .alg-card-details{
+    flex:1; min-width:0;
+  }
+  .cube-diagram{
+    width:70px; height:70px; object-fit:contain;
+    background:#ffffff; border:1px solid var(--line); border-radius:8px;
+    padding:4px; flex-shrink:0;
+  }
+  .alg-card-head{display:flex; align-items:center; gap:10px; margin-bottom:12px;}
+  .alg-badge{
+    font-family:'JetBrains Mono',monospace; font-weight:700; font-size:13px; color:var(--accent);
+    background:var(--accent-dim); border-radius:6px; padding:4px 9px; min-width:30px; text-align:center;
+  }
+  .alg-card-name{font-weight:600; font-size:14.5px;}
+  .alg-card.hidden{display:none;}
+
+  footer{padding:48px 24px 60px; max-width:1180px; margin:0 auto; color:var(--muted); font-size:13px;
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; border-top:1px solid var(--line);}
+
+  /* ---- Modal Styles ---- */
+  .modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(10, 10, 12, 0.85);
+    backdrop-filter: blur(8px);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+  .modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .modal-content {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    width: 90%;
+    max-width: 640px;
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 32px;
+    position: relative;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    transform: scale(0.95);
+    transition: transform 0.25s ease;
+  }
+  .modal-overlay.active .modal-content {
+    transform: scale(1);
+  }
+  .modal-close {
+    position: absolute;
+    top: 20px; right: 20px;
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 20px;
+    font-weight: bold;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: color 0.15s, background 0.15s;
+  }
+  .modal-close:hover {
+    color: var(--ink);
+    background: var(--line);
+  }
+  .modal-content h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 24px;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 12px;
+    color: var(--accent);
+  }
+  .modal-content p, .modal-content li {
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--ink);
+  }
+  .modal-content ul {
+    padding-left: 20px;
+    margin-bottom: 16px;
+  }
+  .modal-content section {
+    margin-bottom: 24px;
+  }
+  .modal-content h3 {
+    font-size: 18px;
+    margin-top: 20px;
+    margin-bottom: 8px;
+    color: var(--ink);
+  }
+
+  /* ---- Guide Styles ---- */
+  .guide-section {
+    margin-top: 56px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 32px;
+  }
+  .guide-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    margin-top: 24px;
+  }
+  .guide-col h3 {
+    font-size: 18px;
+    color: var(--accent);
+    margin-top: 0;
+    margin-bottom: 12px;
+  }
+  .guide-col p {
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: var(--muted);
+    margin: 0 0 14px 0;
+  }
+  .guide-col ul {
+    margin: 0;
+    padding-left: 20px;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .guide-col li {
+    margin-bottom: 8px;
+    line-height: 1.5;
+  }
+  .footer-links {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .footer-links a {
+    cursor: pointer;
+    transition: color 0.15s;
+  }
+  .footer-links a:hover {
+    color: var(--accent);
+    text-decoration: underline;
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="logo"><div class="logo-mark"></div>Solved<span class="tier">/ Advanced</span></div>
+    <nav class="top-nav" id="top-nav" role="tablist" aria-label="Main Navigation">
+      <button id="nav-btn-home" role="tab" data-tab="home" class="active" aria-selected="true" aria-controls="tab-home">Home</button>
+      <button id="nav-btn-practice" role="tab" data-tab="practice" aria-selected="false" aria-controls="tab-practice">Practice</button>
+      <button id="nav-btn-algorithms" role="tab" data-tab="algorithms" aria-selected="false" aria-controls="tab-algorithms">Algorithms</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- ================= HOME ================= -->
+  <section class="tab-panel active" id="tab-home" role="tabpanel" aria-labelledby="nav-btn-home">
+    <div class="hero">
+      <div class="eyebrow"><span class="dot"></span>For solvers past the beginner method</div>
+      <h1>Full CFOP.<br>Every case, on demand.</h1>
+      <p>Recognition is what separates a 30-second solve from a 12-second one. Drill every OLL and PLL case in isolation, then keep the full algorithm set one search away.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-primary" data-goto="practice">Start a training set</a>
+        <a class="btn btn-secondary" data-goto="algorithms">Browse all algorithms</a>
+      </div>
+      <div class="stat-row" id="home-stats"></div>
+    </div>
+
+    <div class="home-section">
+      <h2>Two ways in</h2>
+      <p>Whether you're closing gaps in a set you half-know or looking up a case mid-solve, pick the mode that matches what you need right now.</p>
+      <div class="path-grid">
+        <div class="path-card" data-goto="practice">
+          <div class="kicker">Trainer</div>
+          <h3>Practice</h3>
+          <p>Choose exactly which OLL or PLL cases to drill. Each attempt gives you a scramble that sets up that case, a timer, and the algorithm hidden until you ask for it.</p>
+        </div>
+        <div class="path-card" data-goto="algorithms">
+          <div class="kicker">Reference</div>
+          <h3>Algorithms</h3>
+          <p>Every one of the 57 OLL and 21 PLL algorithms, grouped and searchable, written in standard notation with color-coded moves.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="guide-section">
+      <h2>CFOP Method: A Complete Speedcubing Guide</h2>
+      <p>The CFOP method (Cross, F2L, OLL, PLL), sometimes known as the Fridrich method, is the most popular advanced strategy for solving the 3x3x3 Rubik's Cube. By breaking down the solve into structured stages, cubers can achieve solve times under 10 seconds.</p>
+      
+      <div class="guide-grid">
+        <div class="guide-col">
+          <h3>1. The Four Stages of CFOP</h3>
+          <p>CFOP divides the solve into four distinct, linear phases, each requiring different skills:</p>
+          <ul>
+            <li><strong>Cross (C):</strong> Solve the four edge pieces of the bottom layer to form a cross. This is done intuitively and should take fewer than 8 moves.</li>
+            <li><strong>First Two Layers (F2L):</strong> Solve the bottom layer corners and middle layer edges simultaneously. This reduces the step count and eliminates redundant moves.</li>
+            <li><strong>Orientation of Last Layer (OLL):</strong> Orient the top layer pieces so that the top face is a solid color. There are 57 OLL cases to memorize.</li>
+            <li><strong>Permutation of Last Layer (PLL):</strong> Permute the top layer pieces to their correct locations. There are 21 PLL cases to memorize.</li>
+          </ul>
+        </div>
+        
+        <div class="guide-col">
+          <h3>2. Case Recognition vs. Muscle Memory</h3>
+          <p>Solving a case quickly is a balance of visual recognition and physical execution:</p>
+          <p><strong>Recognition:</strong> When you finish a step, you must scan the remaining layout and identify which algorithm to apply. Efficient recognition requires looking for patterns, blocks, and headlights without rotating the whole cube.</p>
+          <p><strong>Execution:</strong> Once recognized, your hands should execute the algorithm automatically using "finger tricks"—optimized finger movements that avoid regripping the cube.</p>
+        </div>
+        
+        <div class="guide-col">
+          <h3>3. How to Practice Effectively</h3>
+          <p>To improve your speed, do not try to learn all algorithms at once. Follow these steps:</p>
+          <ul>
+            <li><strong>Group cases:</strong> Learn one subset at a time (e.g., OLL T-shapes or PLL corners-only).</li>
+            <li><strong>Use scrambles:</strong> The trainer provides custom setup scrambles. Execute the scramble, try to recognize the case, and execute the solution without looking.</li>
+            <li><strong>Focus on accuracy:</strong> Drill slowly at first. Smooth, lockup-free execution is always faster than fast but clumsy movements.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PRACTICE ================= -->
+  <section class="tab-panel" id="tab-practice" role="tabpanel" aria-labelledby="nav-btn-practice">
+    <h1 class="sr-only">Interactive CFOP Practice Trainer</h1>
+    <div class="practice-shell">
+      <div class="sub-tabs" id="practice-subtabs">
+        <button class="sub-tab-btn active" data-set="OLL">OLL Trainer</button>
+        <button class="sub-tab-btn" data-set="PLL">PLL Trainer</button>
+      </div>
+
+      <div class="practice-grid">
+        <div class="case-picker" id="case-picker"></div>
+
+        <div class="trainer-panel">
+          <div>
+            <div class="trainer-case-label" id="trainer-case-label">Case</div>
+            <div class="trainer-case-name" id="trainer-case-name">—</div>
+          </div>
+
+          <div class="trainer-img-wrapper" id="trainer-img-wrapper" style="display: none;">
+            <img id="trainer-case-image" src="" alt="Cube State">
+          </div>
+
+          <div class="scramble-box">
+            <div class="alg-row" id="scramble-display"><span class="pill neutral">Press "New scramble" to begin</span></div>
+          </div>
+
+          <div class="timer-display" id="timer-display">0.00</div>
+
+          <div class="trainer-controls">
+            <button class="tbtn primary" id="btn-new-scramble">New scramble</button>
+            <button class="tbtn" id="btn-timer-toggle">Start timer</button>
+            <button class="tbtn" id="btn-reveal">Show algorithm</button>
+          </div>
+
+          <div class="solution-reveal">
+            <div class="trainer-case-label">Solution</div>
+            <div class="alg-row blur-hint" id="solution-display"></div>
+          </div>
+
+          <div class="stats-row">
+            <div class="stat-mini"><div class="n" id="stat-count">0</div><div class="l">Solves</div></div>
+            <div class="stat-mini"><div class="n" id="stat-best">—</div><div class="l">Best</div></div>
+            <div class="stat-mini"><div class="n" id="stat-avg">—</div><div class="l">Average</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ALGORITHMS ================= -->
+  <section class="tab-panel" id="tab-algorithms" role="tabpanel" aria-labelledby="nav-btn-algorithms">
+    <h1 class="sr-only">CFOP OLL and PLL Algorithm Reference Sheet</h1>
+    <div class="algs-shell">
+      <div class="sub-tabs" id="algs-subtabs">
+        <button class="sub-tab-btn active" data-set="OLL">OLL — 57 cases</button>
+        <button class="sub-tab-btn" data-set="PLL">PLL — 21 cases</button>
+      </div>
+      <div class="algs-toolbar">
+        <input class="search-input" id="algs-search" placeholder="Search by name or case number…">
+      </div>
+      <div id="algs-container"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <span>Solved / Advanced — recognition first, speed second.</span>
+  <div class="footer-links">
+    <a id="link-privacy">Privacy Policy</a>
+    <span>·</span>
+    <a id="link-terms">Terms of Service</a>
+    <span>·</span>
+    <a id="link-about">About &amp; Contact</a>
+  </div>
+  <span>57 OLL · 21 PLL · one trainer.</span>
+</footer>
+
+<script>
+/* ============================================================
+   DATA
+   ============================================================ */
+const OLL_CASES = [
+  {num:1,name:"Runway",group:"Dot",alg:"R U2 R2 F R F' U2 R' F R F'"},
+  {num:2,name:"Zamboni",group:"Dot",alg:"f U R U' R' S' U R U' R' F'"},
+  {num:3,name:"Anti-Pinwheel",group:"Dot",alg:"f R U R' U' f' U' F R U R' U' F'"},
+  {num:4,name:"Pinwheel",group:"Dot",alg:"f R U R' U' f' U F R U R' U' F'"},
+  {num:5,name:"Lefty Square",group:"Square",alg:"r' U2 R U R' U r"},
+  {num:6,name:"Righty Square",group:"Square",alg:"r U2 R' U' R U' r'"},
+  {num:7,name:"Lightning",group:"Small Lightning Bolt",alg:"r U R' U R U2 r'"},
+  {num:8,name:"Wide Left Sune",group:"Small Lightning Bolt",alg:"l' U' L U' L' U2 l"},
+  {num:9,name:"Kite",group:"Fish",alg:"R U R' U' R' F R2 U R' U' F'"},
+  {num:10,name:"Anti-Kite",group:"Fish",alg:"R U R' U R' F R F' R U2 R'"},
+  {num:11,name:"Downstairs",group:"Small Lightning Bolt",alg:"r' R2 U R' U R U2 R' U M'"},
+  {num:12,name:"Upstairs",group:"Small Lightning Bolt",alg:"r R2' U' R U' R' U2 R U' r' R"},
+  {num:13,name:"Gun",group:"Knight Move",alg:"F U R U2 R' U' R U R' F'"},
+  {num:14,name:"Anti-Gun",group:"Knight Move",alg:"R' F R U R' F' R F U' F'"},
+  {num:15,name:"Squeegee",group:"Knight Move",alg:"l' U' l L' U' L U l' U l"},
+  {num:16,name:"Anti-Squeegee",group:"Knight Move",alg:"r U r' R U R' U' r U' r'"},
+  {num:17,name:"Slash",group:"Dot",alg:"R U R' U R' F R F' U2 R' F R F'"},
+  {num:18,name:"Crown",group:"Dot",alg:"R U2 R2 F R F' U2 M' U R U' r'"},
+  {num:19,name:"Bunny",group:"Dot",alg:"S' R U R' S U' R' F R F'"},
+  {num:20,name:"X",group:"Dot",alg:"r' R U R U R' U' r R' M' U R U' r'"},
+  {num:21,name:"H",group:"OCLL",alg:"R U R' U R U' R' U R U2 R'"},
+  {num:22,name:"Pi",group:"OCLL",alg:"R U2 R2 U' R2 U' R2 U2 R"},
+  {num:23,name:"U / Headlights",group:"OCLL",alg:"R2 D' R U2 R' D R U2 R"},
+  {num:24,name:"T / Chameleon",group:"OCLL",alg:"r U R' U' r' F R F'"},
+  {num:25,name:"L / Bowtie",group:"OCLL",alg:"F' r U R' U' r' F R"},
+  {num:26,name:"Antisune",group:"OCLL",alg:"R U2 R' U' R U' R'"},
+  {num:27,name:"Sune",group:"OCLL",alg:"R U R' U R U2 R'"},
+  {num:28,name:"Stealth / Arrow",group:"All Corners Oriented",alg:"r U R' U' r' R U R U' R'"},
+  {num:29,name:"Spotted Chameleon",group:"Awkward",alg:"R U R' U' R U' R' F' U' F R U R'"},
+  {num:30,name:"Anti-Spotted Chameleon",group:"Awkward",alg:"F U R U2 R' U' R U2 R' U' F'"},
+  {num:31,name:"Couch",group:"P Shape",alg:"R' U' F U R U' R' F' R"},
+  {num:32,name:"Anti-Couch",group:"P Shape",alg:"S R U R' U' R' F R f'"},
+  {num:33,name:"Tying Shoelaces / Key",group:"T Shape",alg:"R U R' U' R' F R F'"},
+  {num:34,name:"City",group:"C Shape",alg:"R U R2' U' R' F R U R U' F'"},
+  {num:35,name:"Fish Salad",group:"Fish",alg:"R U2 R2 F R F' R U2 R'"},
+  {num:36,name:"Sea-Mew / Wario",group:"W Shape",alg:"L' U' L U' L' U L U L F' L' F"},
+  {num:37,name:"Mounted Fish",group:"Fish",alg:"F R' F' R U R U' R'"},
+  {num:38,name:"Mario / Moustache",group:"W Shape",alg:"R U R' U R U' R' U' R' F R F'"},
+  {num:39,name:"Fung",group:"Big Lightning Bolt",alg:"L F' L' U' L U F U' L'"},
+  {num:40,name:"Anti-Fung",group:"Big Lightning Bolt",alg:"R' F R U R' U' F' U R"},
+  {num:41,name:"Awkward Fish",group:"Awkward",alg:"R U R' U R U2 R' F R U R' U' F'"},
+  {num:42,name:"Lefty Awkward Fish",group:"Awkward",alg:"R' U' R U' R' U2 R F R U R' U' F'"},
+  {num:43,name:"Anti-P",group:"P Shape",alg:"R' U' F' U F R"},
+  {num:44,name:"P",group:"P Shape",alg:"F U R U' R' F'"},
+  {num:45,name:"Suit Up / T",group:"T Shape",alg:"F R U R' U' F'"},
+  {num:46,name:"Seein' Headlights",group:"C Shape",alg:"R' U' R' F R F' U R"},
+  {num:47,name:"Anti-Breakneck",group:"L Shape",alg:"R' U' R' F R F' R' F R F' U R"},
+  {num:48,name:"Breakneck",group:"L Shape",alg:"F R U R' U' R U R' U' F'"},
+  {num:49,name:"Right Back Squeezy",group:"L Shape",alg:"r U' r2' U r2 U r2' U' r"},
+  {num:50,name:"Right Front Squeezy",group:"L Shape",alg:"R' F R2 B' R2 F' R2 B R'"},
+  {num:51,name:"Bottlecap / Ant",group:"I Shape",alg:"F U R U' R' U R U' R' F'"},
+  {num:52,name:"Rice Cooker",group:"I Shape",alg:"R U R' U R U' B U' B' R'"},
+  {num:53,name:"Frying Pan",group:"L Shape",alg:"l' U' L U' L' U L U' L' U2 l"},
+  {num:54,name:"Anti-Frying Pan",group:"L Shape",alg:"r U R' U R U' R' U R U2 r'"},
+  {num:55,name:"Highway / Freeway",group:"I Shape",alg:"R' F R U R U' R2' F' R2 U' R' U R U R'"},
+  {num:56,name:"Streetlights",group:"I Shape",alg:"r U r' U R U' R' U R U' R' r U' r'"},
+  {num:57,name:"Mummy / H",group:"All Corners Oriented",alg:"R U R' U' M' U R U' r'"},
+];
+
+const PLL_CASES = [
+  {id:"Aa",name:"A-Perm (a)",group:"Corners Only",alg:"x R' U R' D2 R U' R' D2 R2 x'"},
+  {id:"Ab",name:"A-Perm (b)",group:"Corners Only",alg:"y' x R2 D2 R U R' D2 R U' R x'"},
+  {id:"E",name:"E-Perm",group:"Corners Only",alg:"y x' R U' R' D R U R' D' R U R' D R U' R' D' x"},
+  {id:"F",name:"F-Perm",group:"Corners & Edges",alg:"R' U' F' R U R' U' R' F R2 U' R' U' R U R' U R"},
+  {id:"Ga",name:"G-Perm (a)",group:"Corners & Edges",alg:"R2 U R' U R' U' R U' R2 D U' R' U R D'"},
+  {id:"Gb",name:"G-Perm (b)",group:"Corners & Edges",alg:"R' U' R U D' R2 U R' U R U' R U' R2 D"},
+  {id:"Gc",name:"G-Perm (c)",group:"Corners & Edges",alg:"R2 U' R U' R U R' U R2 D' U R U' R' D"},
+  {id:"Gd",name:"G-Perm (d)",group:"Corners & Edges",alg:"R U R' U' D R2 U' R U' R' U R' U R2 D'"},
+  {id:"H",name:"H-Perm",group:"Edges Only",alg:"M2 U M2 U2 M2 U M2"},
+  {id:"Ja",name:"J-Perm (a)",group:"Corners & Edges",alg:"R' U L' U2 R U' R' U2 R L"},
+  {id:"Jb",name:"J-Perm (b)",group:"Corners & Edges",alg:"R U R' F' R U R' U' R' F R2 U' R' U'"},
+  {id:"Na",name:"N-Perm (a)",group:"Corners & Edges",alg:"L U' R U2 L' U R' L U' R U2 L' U R' U'"},
+  {id:"Nb",name:"N-Perm (b)",group:"Corners & Edges",alg:"R' U L' U2 R U' L R' U L' U2 R U' L U'"},
+  {id:"Ra",name:"R-Perm (a)",group:"Corners & Edges",alg:"R U' R' U' R U R D R' U' R D' R' U2 R'"},
+  {id:"Rb",name:"R-Perm (b)",group:"Corners & Edges",alg:"R' U2 R U2 R' F R U R' U' R' F' R2 U'"},
+  {id:"T",name:"T-Perm",group:"Corners & Edges",alg:"R U R' U' R' F R2 U' R' U' R U R' F'"},
+  {id:"Ua",name:"U-Perm (a)",group:"Edges Only",alg:"M2 U M' U2 M U M2"},
+  {id:"Ub",name:"U-Perm (b)",group:"Edges Only",alg:"M2 U' M' U2 M U' M2"},
+  {id:"V",name:"V-Perm",group:"Corners & Edges",alg:"R' U R' U' B' R' B2 U' B' U B' R B R"},
+  {id:"Y",name:"Y-Perm",group:"Corners & Edges",alg:"F R U' R' U' R U R' F' R U R' U' R' F R F'"},
+  {id:"Z",name:"Z-Perm",group:"Edges Only",alg:"M2 U2 M U' M2 U' M2 U' M"},
+];
+
+const OLL_GROUP_ORDER = ["Dot","Square","Small Lightning Bolt","Big Lightning Bolt","Fish","Knight Move","Awkward","P Shape","W Shape","L Shape","C Shape","T Shape","I Shape","All Corners Oriented","OCLL"];
+const PLL_GROUP_ORDER = ["Edges Only","Corners Only","Corners & Edges"];
+
+/* ============================================================
+   MOVE PILL RENDERING
+   ============================================================ */
+const MOVE_COLOR = {U:'var(--c-yellow)', D:'var(--c-white)', L:'var(--c-orange)', R:'var(--c-red)', F:'var(--c-green)', B:'var(--c-blue)'};
+
+function invertMove(m){
+  if(m.endsWith('2')) return m;
+  if(m.endsWith("'")) return m.slice(0,-1);
+  return m + "'";
+}
+function invertAlg(alg){
+  return alg.trim().split(/\s+/).reverse().map(invertMove).join(' ');
+}
+
+function makePill(token){
+  const span = document.createElement('span');
+  const base = token[0];
+  const upper = base.toUpperCase();
+  if(MOVE_COLOR[upper]){
+    span.className = 'pill' + (base === base.toLowerCase() ? ' wide' : '');
+    span.style.background = MOVE_COLOR[upper];
+    span.style.color = (upper==='U'||upper==='D'||upper==='L') ? '#1A1305' : '#fff';
+  } else {
+    span.className = 'pill neutral';
+  }
+  span.textContent = token;
+  return span;
+}
+function renderAlg(container, algString){
+  container.innerHTML = '';
+  algString.trim().split(/\s+/).forEach(tok => container.appendChild(makePill(tok)));
+}
+
+/* ============================================================
+   TAB NAVIGATION
+   ============================================================ */
+document.getElementById('top-nav').addEventListener('click', e=>{
+  const btn = e.target.closest('button[data-tab]');
+  if(!btn) return;
+  setActiveTab(btn.dataset.tab);
+});
+document.querySelectorAll('[data-goto]').forEach(el=>{
+  el.addEventListener('click', ()=> setActiveTab(el.dataset.goto));
+});
+function setActiveTab(tab){
+  document.querySelectorAll('.top-nav button').forEach(b=> {
+    const active = b.dataset.tab===tab;
+    b.classList.toggle('active', active);
+    b.setAttribute('aria-selected', active ? 'true' : 'false');
+  });
+  document.querySelectorAll('.tab-panel').forEach(p=> p.classList.toggle('active', p.id === 'tab-'+tab));
+  
+  let title = "Solved / Advanced — OLL & PLL Trainer";
+  let description = "Master the Rubik's Cube CFOP method. Train all 57 OLL and 21 PLL algorithms with interactive scrambles, live timers, and detailed visual cube state diagrams.";
+  
+  if (tab === 'practice') {
+    title = "Practice CFOP OLL & PLL Cases — Solved / Advanced";
+    description = "Drill 57 OLL and 21 PLL cases in isolation. Get custom cube scrambles, track your solve times, and analyze your speed stats.";
+  } else if (tab === 'algorithms') {
+    title = "CFOP OLL & PLL Algorithm Reference — Solved / Advanced";
+    description = "Browse the complete database of 57 OLL and 21 PLL speedcubing algorithms, complete with interactive 2D visual cube states.";
+  }
+  
+  document.title = title;
+  const metaDesc = document.querySelector('meta[name="description"]');
+  if(metaDesc) metaDesc.setAttribute('content', description);
+  
+  const ogTitle = document.querySelector('meta[property="og:title"]');
+  if(ogTitle) ogTitle.setAttribute('content', title);
+  const ogDesc = document.querySelector('meta[property="og:description"]');
+  if(ogDesc) ogDesc.setAttribute('content', description);
+  
+  const twTitle = document.querySelector('meta[property="twitter:title"]');
+  if(twTitle) twTitle.setAttribute('content', title);
+  const twDesc = document.querySelector('meta[property="twitter:description"]');
+  if(twDesc) twDesc.setAttribute('content', description);
+
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+/* ============================================================
+   HOME STATS
+   ============================================================ */
+const homeStats = [
+  {n:'57', l:'OLL algorithms'},
+  {n:'21', l:'PLL algorithms'},
+  {n:'2-look', l:'or full CFOP — your call'},
+];
+const homeStatsEl = document.getElementById('home-stats');
+homeStats.forEach(s=>{
+  const c = document.createElement('div');
+  c.className = 'stat-card';
+  c.innerHTML = `<div class="stat-num">${s.n}</div><div class="stat-label">${s.l}</div>`;
+  homeStatsEl.appendChild(c);
+});
+
+/* ============================================================
+   PRACTICE — state
+   ============================================================ */
+let practiceSet = 'OLL';
+let selected = { OLL: new Set(), PLL: new Set() };
+let currentCase = null;
+let currentScramble = '';
+let timerRunning = false;
+let timerStart = 0;
+let timerRAF = null;
+let times = { OLL: [], PLL: [] };
+
+function caseKey(c, type){ return type === 'OLL' ? c.num : c.id; }
+function loadSelection(type){
+  try{
+    const raw = localStorage.getItem('solved-adv-selected-'+type);
+    if(raw){ return new Set(JSON.parse(raw)); }
+  }catch(e){}
+  const all = (type==='OLL'?OLL_CASES:PLL_CASES).map(c=>caseKey(c,type));
+  return new Set(all);
+}
+function saveSelection(type){
+  try{ localStorage.setItem('solved-adv-selected-'+type, JSON.stringify([...selected[type]])); }catch(e){}
+}
+selected.OLL = loadSelection('OLL');
+selected.PLL = loadSelection('PLL');
+
+function renderCasePicker(){
+  const cases = practiceSet === 'OLL' ? OLL_CASES : PLL_CASES;
+  const groupOrder = practiceSet === 'OLL' ? OLL_GROUP_ORDER : PLL_GROUP_ORDER;
+  const el = document.getElementById('case-picker');
+  el.innerHTML = '';
+
+  const head = document.createElement('div');
+  head.className = 'picker-head';
+  head.innerHTML = `<span>${cases.length} cases</span>`;
+  const actions = document.createElement('div');
+  actions.className = 'picker-actions';
+  const allBtn = document.createElement('button');
+  allBtn.id = 'btn-select-all';
+  allBtn.className = 'link-btn'; allBtn.textContent = 'Select all';
+  allBtn.onclick = ()=>{ selected[practiceSet] = new Set(cases.map(c=>caseKey(c,practiceSet))); saveSelection(practiceSet); renderCasePicker(); };
+  const noneBtn = document.createElement('button');
+  noneBtn.id = 'btn-select-none';
+  noneBtn.className = 'link-btn'; noneBtn.textContent = 'Select none';
+  noneBtn.onclick = ()=>{ selected[practiceSet] = new Set(); saveSelection(practiceSet); renderCasePicker(); };
+  actions.appendChild(allBtn); actions.appendChild(noneBtn);
+  head.appendChild(actions);
+  el.appendChild(head);
+
+  groupOrder.forEach(group=>{
+    const inGroup = cases.filter(c=>c.group===group);
+    if(!inGroup.length) return;
+    const label = document.createElement('div');
+    label.className = 'group-label';
+    label.textContent = group;
+    el.appendChild(label);
+    const grid = document.createElement('div');
+    grid.className = 'case-chip-grid';
+    inGroup.forEach(c=>{
+      const key = caseKey(c, practiceSet);
+      const chip = document.createElement('div');
+      chip.className = 'case-chip' + (selected[practiceSet].has(key) ? ' selected' : '');
+      chip.textContent = practiceSet === 'OLL' ? c.num : c.id;
+      chip.title = c.name;
+      chip.onclick = ()=>{
+        if(selected[practiceSet].has(key)) selected[practiceSet].delete(key);
+        else selected[practiceSet].add(key);
+        saveSelection(practiceSet);
+        chip.classList.toggle('selected');
+      };
+      grid.appendChild(chip);
+    });
+    el.appendChild(grid);
+  });
+}
+
+document.getElementById('practice-subtabs').addEventListener('click', e=>{
+  const btn = e.target.closest('button[data-set]');
+  if(!btn) return;
+  practiceSet = btn.dataset.set;
+  document.querySelectorAll('#practice-subtabs .sub-tab-btn').forEach(b=>b.classList.toggle('active', b===btn));
+  renderCasePicker();
+  resetTrainerDisplay();
+  renderStats();
+});
+
+function resetTrainerDisplay(){
+  currentCase = null; currentScramble = '';
+  document.getElementById('trainer-case-label').textContent = practiceSet + ' case';
+  document.getElementById('trainer-case-name').textContent = '—';
+  
+  const imgWrapper = document.getElementById('trainer-img-wrapper');
+  const imgEl = document.getElementById('trainer-case-image');
+  if (imgWrapper && imgEl) {
+    imgWrapper.style.display = 'none';
+    imgEl.src = '';
+  }
+
+  document.getElementById('scramble-display').innerHTML = '<span class="pill neutral">Press "New scramble" to begin</span>';
+  document.getElementById('solution-display').innerHTML = '';
+  document.getElementById('solution-display').parentElement.classList.remove('revealed');
+  stopTimer(false);
+  document.getElementById('timer-display').textContent = '0.00';
+}
+
+function pickRandomCase(){
+  const cases = practiceSet === 'OLL' ? OLL_CASES : PLL_CASES;
+  const pool = cases.filter(c => selected[practiceSet].has(caseKey(c, practiceSet)));
+  const usePool = pool.length ? pool : cases;
+  return usePool[Math.floor(Math.random() * usePool.length)];
+}
+
+document.getElementById('btn-new-scramble').addEventListener('click', ()=>{
+  currentCase = pickRandomCase();
+  currentScramble = invertAlg(currentCase.alg);
+  document.getElementById('trainer-case-label').textContent = practiceSet + (practiceSet==='OLL' ? ' case #'+currentCase.num : ' case') ;
+  document.getElementById('trainer-case-name').textContent = currentCase.name;
+
+  const imgWrapper = document.getElementById('trainer-img-wrapper');
+  const imgEl = document.getElementById('trainer-case-image');
+  if (imgWrapper && imgEl) {
+    const encodedAlg = encodeURIComponent(currentCase.alg);
+    if (practiceSet === 'OLL') {
+      imgEl.src = `https://visualcube.api.cubing.net/visualcube.php?fmt=svg&size=200&view=plan&stage=oll&case=${encodedAlg}`;
+    } else {
+      imgEl.src = `https://visualcube.api.cubing.net/visualcube.php?fmt=svg&size=200&stage=pll&case=${encodedAlg}`;
+    }
+    imgWrapper.style.display = 'flex';
+  }
+
+  renderAlg(document.getElementById('scramble-display'), currentScramble);
+  renderAlg(document.getElementById('solution-display'), currentCase.alg);
+  document.getElementById('solution-display').classList.remove('revealed');
+  document.getElementById('btn-reveal').textContent = 'Show algorithm';
+  stopTimer(false);
+  document.getElementById('timer-display').textContent = '0.00';
+});
+
+document.getElementById('btn-reveal').addEventListener('click', ()=>{
+  const sol = document.getElementById('solution-display');
+  const revealed = sol.classList.toggle('revealed');
+  document.getElementById('btn-reveal').textContent = revealed ? 'Hide algorithm' : 'Show algorithm';
+});
+
+function tickTimer(){
+  const elapsed = (performance.now() - timerStart) / 1000;
+  document.getElementById('timer-display').textContent = elapsed.toFixed(2);
+  timerRAF = requestAnimationFrame(tickTimer);
+}
+function startTimer(){
+  timerRunning = true; timerStart = performance.now();
+  document.getElementById('btn-timer-toggle').textContent = 'Stop timer';
+  tickTimer();
+}
+function stopTimer(logTime){
+  if(timerRunning && logTime){
+    const elapsed = (performance.now() - timerStart) / 1000;
+    if(currentCase){
+      times[practiceSet].push(elapsed);
+      renderStats();
+    }
+  }
+  timerRunning = false;
+  cancelAnimationFrame(timerRAF);
+  document.getElementById('btn-timer-toggle').textContent = 'Start timer';
+}
+document.getElementById('btn-timer-toggle').addEventListener('click', ()=>{
+  if(!currentCase){ return; }
+  if(timerRunning) stopTimer(true);
+  else startTimer();
+});
+
+function renderStats(){
+  const t = times[practiceSet];
+  document.getElementById('stat-count').textContent = t.length;
+  document.getElementById('stat-best').textContent = t.length ? Math.min(...t).toFixed(2) : '—';
+  document.getElementById('stat-avg').textContent = t.length ? (t.reduce((a,b)=>a+b,0)/t.length).toFixed(2) : '—';
+}
+
+/* ============================================================
+   ALGORITHMS TAB
+   ============================================================ */
+let algsSet = 'OLL';
+document.getElementById('algs-subtabs').addEventListener('click', e=>{
+  const btn = e.target.closest('button[data-set]');
+  if(!btn) return;
+  algsSet = btn.dataset.set;
+  document.querySelectorAll('#algs-subtabs .sub-tab-btn').forEach(b=>b.classList.toggle('active', b===btn));
+  document.getElementById('algs-search').value = '';
+  renderAlgsList();
+});
+
+function renderAlgsList(){
+  const cases = algsSet === 'OLL' ? OLL_CASES : PLL_CASES;
+  const groupOrder = algsSet === 'OLL' ? OLL_GROUP_ORDER : PLL_GROUP_ORDER;
+  const container = document.getElementById('algs-container');
+  container.innerHTML = '';
+
+  groupOrder.forEach(group=>{
+    const inGroup = cases.filter(c=>c.group===group);
+    if(!inGroup.length) return;
+    const groupEl = document.createElement('div');
+    groupEl.className = 'algs-group';
+    groupEl.innerHTML = `<div class="algs-group-title">${group}</div>`;
+    const list = document.createElement('div');
+    list.className = 'algs-list';
+    inGroup.forEach(c=>{
+      const card = document.createElement('div');
+      card.className = 'alg-card';
+      card.dataset.search = ((algsSet==='OLL'?c.num:c.id) + ' ' + c.name).toLowerCase();
+      
+      const wrapper = document.createElement('div');
+      wrapper.className = 'alg-card-wrapper';
+
+      const img = document.createElement('img');
+      img.className = 'cube-diagram';
+      img.loading = 'lazy';
+      img.width = 70;
+      img.height = 70;
+      img.alt = c.name;
+
+      const encodedAlg = encodeURIComponent(c.alg);
+      if (algsSet === 'OLL') {
+        img.src = `https://visualcube.api.cubing.net/visualcube.php?fmt=svg&size=150&view=plan&stage=oll&case=${encodedAlg}`;
+      } else {
+        img.src = `https://visualcube.api.cubing.net/visualcube.php?fmt=svg&size=150&stage=pll&case=${encodedAlg}`;
+      }
+      wrapper.appendChild(img);
+
+      const details = document.createElement('div');
+      details.className = 'alg-card-details';
+
+      const head = document.createElement('div');
+      head.className = 'alg-card-head';
+      head.innerHTML = `<span class="alg-badge">${algsSet==='OLL'?c.num:c.id}</span><span class="alg-card-name">${c.name}</span>`;
+      details.appendChild(head);
+
+      const row = document.createElement('div');
+      row.className = 'alg-row';
+      renderAlg(row, c.alg);
+      details.appendChild(row);
+
+      wrapper.appendChild(details);
+      card.appendChild(wrapper);
+      list.appendChild(card);
+    });
+    groupEl.appendChild(list);
+    container.appendChild(groupEl);
+  });
+}
+document.getElementById('algs-search').addEventListener('input', e=>{
+  const q = e.target.value.trim().toLowerCase();
+  document.querySelectorAll('.alg-card').forEach(card=>{
+    card.classList.toggle('hidden', q.length>0 && !card.dataset.search.includes(q));
+  });
+  document.querySelectorAll('.algs-group').forEach(g=>{
+    const anyVisible = [...g.querySelectorAll('.alg-card')].some(c=>!c.classList.contains('hidden'));
+    g.style.display = anyVisible ? '' : 'none';
+  });
+});
+
+/* ============================================================
+   MODALS UTILITY
+   ============================================================ */
+function setupModal(triggerId, modalId) {
+  const trigger = document.getElementById(triggerId);
+  const modal = document.getElementById(modalId);
+  if (!trigger || !modal) return;
+  
+  const closeBtn = modal.querySelector('.modal-close');
+  
+  trigger.addEventListener('click', (e) => {
+    e.preventDefault();
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  });
+  
+  const closeModal = () => {
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+  };
+  
+  if (closeBtn) {
+    closeBtn.addEventListener('click', closeModal);
+  }
+  
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      closeModal();
+    }
+  });
+  
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.classList.contains('active')) {
+      closeModal();
+    }
+  });
+}
+
+setupModal('link-privacy', 'modal-privacy');
+setupModal('link-terms', 'modal-terms');
+setupModal('link-about', 'modal-about');
+
+/* ============================================================
+   INIT
+   ============================================================ */
+renderCasePicker();
+resetTrainerDisplay();
+renderStats();
+renderAlgsList();
+</script>
+
+<!-- ================= MODALS ================= -->
+<div class="modal-overlay" id="modal-privacy" role="dialog" aria-modal="true" aria-labelledby="privacy-title">
+  <div class="modal-content">
+    <button class="modal-close" aria-label="Close modal">&times;</button>
+    <h2 id="privacy-title">Privacy Policy</h2>
+    <p>Last updated: July 13, 2026</p>
+    <section>
+      <h3>1. Information We Collect</h3>
+      <p>Solved / Advanced does not collect or store any personal user information. Your setting selections, training configurations, and practice solve history are saved locally in your browser's Web Storage (localStorage) and never transmitted to our servers.</p>
+    </section>
+    <section>
+      <h3>2. Google AdSense & Cookies</h3>
+      <p>We use Google AdSense to serve advertisements. Google, as a third-party vendor, uses cookies to serve ads on this website. Google's use of advertising cookies enables it and its partners to serve ads to our users based on their visit to our site or other sites on the Internet.</p>
+      <p>Users may opt out of personalized advertising by visiting Google's <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">Ads Settings</a> page.</p>
+    </section>
+    <section>
+      <h3>3. Log Files</h3>
+      <p>Like many other websites, our hosting provider may collect basic connection log files (IP addresses, browser type, referring pages). These are standard server operations used strictly for site performance monitoring and threat prevention.</p>
+    </section>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-terms" role="dialog" aria-modal="true" aria-labelledby="terms-title">
+  <div class="modal-content">
+    <button class="modal-close" aria-label="Close modal">&times;</button>
+    <h2 id="terms-title">Terms of Service</h2>
+    <p>Last updated: July 13, 2026</p>
+    <section>
+      <h3>1. Acceptance of Terms</h3>
+      <p>By accessing and using Solved / Advanced, you agree to comply with and be bound by these Terms of Service. If you do not agree, please do not use the tool.</p>
+    </section>
+    <section>
+      <h3>2. Use of Service</h3>
+      <p>This web application is provided as a free educational practice trainer for speedcubing algorithms. You agree to use the site responsibly and not attempt to scrap, reverse engineer, or flood the server resources.</p>
+    </section>
+    <section>
+      <h3>3. Disclaimer of Warranties</h3>
+      <p>Solved / Advanced is provided "as is" and "as available" without any warranties of any kind, either express or implied, including the accuracy of algorithms, timer accuracy, or continuous uptime.</p>
+    </section>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-about" role="dialog" aria-modal="true" aria-labelledby="about-title">
+  <div class="modal-content">
+    <button class="modal-close" aria-label="Close modal">&times;</button>
+    <h2 id="about-title">About & Contact</h2>
+    <section>
+      <h3>About Solved / Advanced</h3>
+      <p>Solved / Advanced is an interactive web-based trainer designed for speedcubers looking to master the advanced CFOP (Fridrich) method. We provide visual guides, customizable practice sets, and detailed statistics to drill OLL (Orientation of the Last Layer) and PLL (Permutation of the Last Layer) cases in isolation.</p>
+    </section>
+    <section>
+      <h3>Contact Us</h3>
+      <p>If you have any feedback, questions, or would like to report incorrect algorithm notations, please feel free to reach out to us:</p>
+      <p><strong>Email:</strong> support@solvedalg.vercel.app</p>
+    </section>
+  </div>
+</div>
+
+</body>
+</html>
