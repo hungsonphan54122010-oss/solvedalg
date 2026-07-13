@@ -500,6 +500,7 @@
       <div class="sub-tabs" id="practice-subtabs">
         <button class="sub-tab-btn active" data-set="OLL">OLL Trainer</button>
         <button class="sub-tab-btn" data-set="PLL">PLL Trainer</button>
+        <button class="sub-tab-btn" data-set="F2L">F2L Trainer</button>
       </div>
 
       <div class="practice-grid">
@@ -549,6 +550,7 @@
       <div class="sub-tabs" id="algs-subtabs">
         <button class="sub-tab-btn active" data-set="OLL">OLL — 57 cases</button>
         <button class="sub-tab-btn" data-set="PLL">PLL — 21 cases</button>
+        <button class="sub-tab-btn" data-set="F2L">F2L — 41 cases</button>
       </div>
       <div class="algs-toolbar">
         <input class="search-input" id="algs-search" placeholder="Search by name or case number…">
@@ -662,6 +664,52 @@ const PLL_CASES = [
 const OLL_GROUP_ORDER = ["Dot","Square","Small Lightning Bolt","Big Lightning Bolt","Fish","Knight Move","Awkward","P Shape","W Shape","L Shape","C Shape","T Shape","I Shape","All Corners Oriented","OCLL"];
 const PLL_GROUP_ORDER = ["Edges Only","Corners Only","Corners & Edges"];
 
+const F2L_CASES = [
+  {num:1,name:"Easy Insert 1",group:"Basic Inserts",alg:"U R U' R'"},
+  {num:2,name:"Easy Insert 2",group:"Basic Inserts",alg:"y' U' R' U R"},
+  {num:3,name:"Easy Insert 3",group:"Basic Inserts",alg:"y' R' U' R"},
+  {num:4,name:"Easy Insert 4",group:"Basic Inserts",alg:"R U' R'"},
+  {num:5,name:"Corner U, Edge U (Matching, Split)",group:"Corner in U, Edge in U (Side)",alg:"U' R U2 R' U2 R U' R'"},
+  {num:6,name:"Corner U, Edge U (Matching, Split, Mirror)",group:"Corner in U, Edge in U (Side)",alg:"d R' U2 R U2 R' U R"},
+  {num:7,name:"Corner U, Edge U (Mismatch, Split)",group:"Corner in U, Edge in U (Side)",alg:"U' R U R' U2 R U' R'"},
+  {num:8,name:"Corner U, Edge U (Mismatch, Split, Mirror)",group:"Corner in U, Edge in U (Side)",alg:"d R' U' R U2 R' U R"},
+  {num:9,name:"Corner U, Edge U (Mismatch, Adjacent)",group:"Corner in U, Edge in U (Side)",alg:"U' R U' R' U R U R'"},
+  {num:10,name:"Corner U, Edge U (Mismatch, Adjacent, Mirror)",group:"Corner in U, Edge in U (Side)",alg:"d R' U R U' R' U' R"},
+  {num:11,name:"Corner U, Edge U (Matching, Adjacent)",group:"Corner in U, Edge in U (Side)",alg:"U' R U2 R' U R U R'"},
+  {num:12,name:"Corner U, Edge U (Matching, Adjacent, Mirror)",group:"Corner in U, Edge in U (Side)",alg:"d R' U2 R U' R' U' R"},
+  {num:13,name:"Corner U, Edge U (Mismatch, Adjacent 2)",group:"Corner in U, Edge in U (Side)",alg:"R U' R' U2 y' R' U' R"},
+  {num:14,name:"Corner U, Edge U (Mismatch, Adjacent 2, Mirror)",group:"Corner in U, Edge in U (Side)",alg:"y' R' U R U2 R U R'"},
+  {num:15,name:"Corner U, Edge U (Matching, Adjacent 2)",group:"Corner in U, Edge in U (Side)",alg:"R U R' U2 R U' R' U2 R U' R'"},
+  {num:16,name:"Corner U, Edge U (Matching, Adjacent 2, Mirror)",group:"Corner in U, Edge in U (Side)",alg:"y' R' U' R U2 R' U R U2 R' U R"},
+  {num:17,name:"Corner U, Edge U (Mismatch, Adjacent 3)",group:"Corner in U, Edge in U (Side)",alg:"R U2 R' U' R U R'"},
+  {num:18,name:"Corner U, Edge U (Mismatch, Adjacent 3, Mirror)",group:"Corner in U, Edge in U (Side)",alg:"y' R' U2 R U R' U' R"},
+  {num:19,name:"Corner U, Edge U (Mismatch, Adjacent 4)",group:"Corner in U, Edge in U (Side)",alg:"U R U' R' U2 R U' R'"},
+  {num:20,name:"Corner U, Edge U (Mismatch, Adjacent 4, Mirror)",group:"Corner in U, Edge in U (Side)",alg:"d R' U R U2 R' U R"},
+  {num:21,name:"Corner U, Edge U (Matching, Adjacent 3)",group:"Corner in U, Edge in U (Side)",alg:"R U' R' U2 R U R'"},
+  {num:22,name:"Corner U, Edge U (Matching, Adjacent 3, Mirror)",group:"Corner in U, Edge in U (Side)",alg:"y' R' U R U2 R' U' R"},
+  {num:23,name:"Corner U, Edge U (Matching, Adjacent 4)",group:"Corner in U, Edge in U (Side)",alg:"U F' U2 F U2 F' U F"},
+  {num:24,name:"Corner U, Edge U (Matching, Adjacent 4, Mirror)",group:"Corner in U, Edge in U (Side)",alg:"U' R U2 R' U2 R U R'"},
+  {num:25,name:"Corner Facing Up (Split)",group:"Corner in U, Edge in U (Up)",alg:"U' R U' R' U2 R U' R'"},
+  {num:26,name:"Corner Facing Up (Split, Mirror)",group:"Corner in U, Edge in U (Up)",alg:"d R' U R U2 R' U R"},
+  {num:27,name:"Corner Facing Up (Adjacent)",group:"Corner in U, Edge in U (Up)",alg:"R U R' U' U' R U R' U' R U R'"},
+  {num:28,name:"Corner Facing Up (Adjacent, Mirror)",group:"Corner in U, Edge in U (Up)",alg:"y' R' U' R U2 R' U' R U R' U' R"},
+  {num:29,name:"Corner Facing Up (Adjacent 2)",group:"Corner in U, Edge in U (Up)",alg:"R U2 R' U' R U R'"},
+  {num:30,name:"Corner Facing Up (Adjacent 2, Mirror)",group:"Corner in U, Edge in U (Up)",alg:"y' R' U2 R U R' U' R"},
+  {num:31,name:"Corner in Slot, Edge in U (Oriented)",group:"Corner in Slot, Edge in U",alg:"U' R U' R' U R U R'"},
+  {num:32,name:"Corner in Slot, Edge in U (Oriented, Mirror)",group:"Corner in Slot, Edge in U",alg:"d R' U R U' R' U' R"},
+  {num:33,name:"Corner in Slot, Edge in U (Oriented 2)",group:"Corner in Slot, Edge in U",alg:"U R U' R' d R' U R"},
+  {num:34,name:"Corner in Slot, Edge in U (Oriented 2, Mirror)",group:"Corner in Slot, Edge in U",alg:"U' R U R' d R' U' R"},
+  {num:35,name:"Corner in Slot, Edge in U (Oriented 3)",group:"Corner in Slot, Edge in U",alg:"R U' R' U R U' R'"},
+  {num:36,name:"Corner in Slot, Edge in U (Oriented 3, Mirror)",group:"Corner in Slot, Edge in U",alg:"R' F R F' R U R'"},
+  {num:37,name:"Corner in U, Edge in Slot",group:"Corner in U, Edge in Slot",alg:"R U R' U' R U R'"},
+  {num:38,name:"Corner in U, Edge in Slot (Mirror)",group:"Corner in U, Edge in Slot",alg:"R U' R' U R U' R'"},
+  {num:39,name:"Corner in U, Edge in Slot 2",group:"Corner in U, Edge in Slot",alg:"R U R' U' R U' R' U2 R U' R'"},
+  {num:40,name:"Corner in U, Edge in Slot 2 (Mirror)",group:"Corner in U, Edge in Slot",alg:"R U R' U2 R U' R' U R U' R'"},
+  {num:41,name:"Both in Slot",group:"Both in Slot",alg:"R U R' U' R U' R' U R U' R'"}
+];
+
+const F2L_GROUP_ORDER = ["Basic Inserts", "Corner in U, Edge in U (Side)", "Corner in U, Edge in U (Up)", "Corner in Slot, Edge in U", "Corner in U, Edge in Slot", "Both in Slot"];
+
 /* ============================================================
    MOVE PILL RENDERING
    ============================================================ */
@@ -714,15 +762,15 @@ function setActiveTab(tab){
   });
   document.querySelectorAll('.tab-panel').forEach(p=> p.classList.toggle('active', p.id === 'tab-'+tab));
   
-  let title = "Solved / Advanced — OLL & PLL Trainer";
-  let description = "Master the Rubik's Cube CFOP method. Train all 57 OLL and 21 PLL algorithms with interactive scrambles, live timers, and detailed visual cube state diagrams.";
+  let title = "Solved / Advanced — CFOP speedcubing trainer";
+  let description = "Master the Rubik's Cube CFOP method. Train all 41 F2L, 57 OLL, and 21 PLL cases with custom scrambles, live timers, and 3D visual cube diagrams.";
   
   if (tab === 'practice') {
-    title = "Practice CFOP OLL & PLL Cases — Solved / Advanced";
-    description = "Drill 57 OLL and 21 PLL cases in isolation. Get custom cube scrambles, track your solve times, and analyze your speed stats.";
+    title = "Practice CFOP F2L, OLL & PLL Cases — Solved / Advanced";
+    description = "Drill F2L, OLL, and PLL cases in isolation. Get custom cube scrambles, track your solve times, and analyze your speed stats.";
   } else if (tab === 'algorithms') {
-    title = "CFOP OLL & PLL Algorithm Reference — Solved / Advanced";
-    description = "Browse the complete database of 57 OLL and 21 PLL speedcubing algorithms, complete with interactive 2D visual cube states.";
+    title = "CFOP F2L, OLL & PLL Algorithm Reference — Solved / Advanced";
+    description = "Browse the complete database of 41 F2L, 57 OLL, and 21 PLL speedcubing algorithms, complete with interactive 3D visual cube states.";
   }
   
   document.title = title;
@@ -762,21 +810,22 @@ homeStats.forEach(s=>{
    PRACTICE — state
    ============================================================ */
 let practiceSet = 'OLL';
-let selected = { OLL: new Set(), PLL: new Set() };
+let selected = { OLL: new Set(), PLL: new Set(), F2L: new Set() };
 let currentCase = null;
 let currentScramble = '';
 let timerRunning = false;
 let timerStart = 0;
 let timerRAF = null;
-let times = { OLL: [], PLL: [] };
+let times = { OLL: [], PLL: [], F2L: [] };
 
-function caseKey(c, type){ return type === 'OLL' ? c.num : c.id; }
+function caseKey(c, type){ return (type === 'OLL' || type === 'F2L') ? c.num : c.id; }
 function loadSelection(type){
   try{
     const raw = localStorage.getItem('solved-adv-selected-'+type);
     if(raw){ return new Set(JSON.parse(raw)); }
   }catch(e){}
-  const all = (type==='OLL'?OLL_CASES:PLL_CASES).map(c=>caseKey(c,type));
+  const cases = type === 'OLL' ? OLL_CASES : (type === 'PLL' ? PLL_CASES : F2L_CASES);
+  const all = cases.map(c=>caseKey(c,type));
   return new Set(all);
 }
 function saveSelection(type){
@@ -784,10 +833,11 @@ function saveSelection(type){
 }
 selected.OLL = loadSelection('OLL');
 selected.PLL = loadSelection('PLL');
+selected.F2L = loadSelection('F2L');
 
 function renderCasePicker(){
-  const cases = practiceSet === 'OLL' ? OLL_CASES : PLL_CASES;
-  const groupOrder = practiceSet === 'OLL' ? OLL_GROUP_ORDER : PLL_GROUP_ORDER;
+  const cases = practiceSet === 'OLL' ? OLL_CASES : (practiceSet === 'PLL' ? PLL_CASES : F2L_CASES);
+  const groupOrder = practiceSet === 'OLL' ? OLL_GROUP_ORDER : (practiceSet === 'PLL' ? PLL_GROUP_ORDER : F2L_GROUP_ORDER);
   const el = document.getElementById('case-picker');
   el.innerHTML = '';
 
@@ -821,7 +871,7 @@ function renderCasePicker(){
       const key = caseKey(c, practiceSet);
       const chip = document.createElement('div');
       chip.className = 'case-chip' + (selected[practiceSet].has(key) ? ' selected' : '');
-      chip.textContent = practiceSet === 'OLL' ? c.num : c.id;
+      chip.textContent = (practiceSet === 'OLL' || practiceSet === 'F2L') ? c.num : c.id;
       chip.title = c.name;
       chip.onclick = ()=>{
         if(selected[practiceSet].has(key)) selected[practiceSet].delete(key);
@@ -865,7 +915,7 @@ function resetTrainerDisplay(){
 }
 
 function pickRandomCase(){
-  const cases = practiceSet === 'OLL' ? OLL_CASES : PLL_CASES;
+  const cases = practiceSet === 'OLL' ? OLL_CASES : (practiceSet === 'PLL' ? PLL_CASES : F2L_CASES);
   const pool = cases.filter(c => selected[practiceSet].has(caseKey(c, practiceSet)));
   const usePool = pool.length ? pool : cases;
   return usePool[Math.floor(Math.random() * usePool.length)];
@@ -874,7 +924,7 @@ function pickRandomCase(){
 document.getElementById('btn-new-scramble').addEventListener('click', ()=>{
   currentCase = pickRandomCase();
   currentScramble = invertAlg(currentCase.alg);
-  document.getElementById('trainer-case-label').textContent = practiceSet + (practiceSet==='OLL' ? ' case #'+currentCase.num : ' case') ;
+  document.getElementById('trainer-case-label').textContent = practiceSet + ((practiceSet==='OLL' || practiceSet==='F2L') ? ' case #'+currentCase.num : ' case') ;
   document.getElementById('trainer-case-name').textContent = currentCase.name;
 
   const imgWrapper = document.getElementById('trainer-img-wrapper');
@@ -883,8 +933,10 @@ document.getElementById('btn-new-scramble').addEventListener('click', ()=>{
     const encodedAlg = encodeURIComponent(currentCase.alg);
     if (practiceSet === 'OLL') {
       imgEl.src = `https://visualcube.api.cubing.net/visualcube.php?fmt=svg&size=200&view=plan&stage=oll&case=${encodedAlg}`;
-    } else {
+    } else if (practiceSet === 'PLL') {
       imgEl.src = `https://visualcube.api.cubing.net/visualcube.php?fmt=svg&size=200&stage=pll&case=${encodedAlg}`;
+    } else if (practiceSet === 'F2L') {
+      imgEl.src = `https://visualcube.api.cubing.net/visualcube.php?fmt=svg&size=200&stage=f2l&case=${encodedAlg}`;
     }
     imgWrapper.style.display = 'flex';
   }
@@ -952,8 +1004,8 @@ document.getElementById('algs-subtabs').addEventListener('click', e=>{
 });
 
 function renderAlgsList(){
-  const cases = algsSet === 'OLL' ? OLL_CASES : PLL_CASES;
-  const groupOrder = algsSet === 'OLL' ? OLL_GROUP_ORDER : PLL_GROUP_ORDER;
+  const cases = algsSet === 'OLL' ? OLL_CASES : (algsSet === 'PLL' ? PLL_CASES : F2L_CASES);
+  const groupOrder = algsSet === 'OLL' ? OLL_GROUP_ORDER : (algsSet === 'PLL' ? PLL_GROUP_ORDER : F2L_GROUP_ORDER);
   const container = document.getElementById('algs-container');
   container.innerHTML = '';
 
@@ -968,7 +1020,7 @@ function renderAlgsList(){
     inGroup.forEach(c=>{
       const card = document.createElement('div');
       card.className = 'alg-card';
-      card.dataset.search = ((algsSet==='OLL'?c.num:c.id) + ' ' + c.name).toLowerCase();
+      card.dataset.search = (((algsSet==='OLL'||algsSet==='F2L')?c.num:c.id) + ' ' + c.name).toLowerCase();
       
       const wrapper = document.createElement('div');
       wrapper.className = 'alg-card-wrapper';
@@ -983,8 +1035,10 @@ function renderAlgsList(){
       const encodedAlg = encodeURIComponent(c.alg);
       if (algsSet === 'OLL') {
         img.src = `https://visualcube.api.cubing.net/visualcube.php?fmt=svg&size=150&view=plan&stage=oll&case=${encodedAlg}`;
-      } else {
+      } else if (algsSet === 'PLL') {
         img.src = `https://visualcube.api.cubing.net/visualcube.php?fmt=svg&size=150&stage=pll&case=${encodedAlg}`;
+      } else if (algsSet === 'F2L') {
+        img.src = `https://visualcube.api.cubing.net/visualcube.php?fmt=svg&size=150&stage=f2l&case=${encodedAlg}`;
       }
       wrapper.appendChild(img);
 
@@ -993,7 +1047,7 @@ function renderAlgsList(){
 
       const head = document.createElement('div');
       head.className = 'alg-card-head';
-      head.innerHTML = `<span class="alg-badge">${algsSet==='OLL'?c.num:c.id}</span><span class="alg-card-name">${c.name}</span>`;
+      head.innerHTML = `<span class="alg-badge">${(algsSet==='OLL'||algsSet==='F2L')?c.num:c.id}</span><span class="alg-card-name">${c.name}</span>`;
       details.appendChild(head);
 
       const row = document.createElement('div');
