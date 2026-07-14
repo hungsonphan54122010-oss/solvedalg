@@ -405,6 +405,125 @@
     color: var(--accent);
     text-decoration: underline;
   }
+  
+  /* Iceberg Page Layout */
+  .skills-shell {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 32px 0;
+  }
+  .iceberg-container {
+    position: relative;
+    max-width: 600px;
+    margin: 0 auto 48px auto;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.4);
+    border: 1px solid #2B2D38;
+  }
+  .iceberg-image {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .hotspot {
+    position: absolute;
+    display: block;
+    text-indent: -9999px;
+    border: 2px dashed transparent;
+    border-radius: 4px;
+    transition: border-color 0.2s, background-color 0.2s;
+    cursor: pointer;
+  }
+  .hotspot:hover {
+    border-color: var(--accent);
+    background-color: rgba(245, 185, 66, 0.15);
+  }
+  
+  .skills-section-title {
+    font-size: 24px;
+    color: var(--accent);
+    margin-top: 48px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid #2B2D38;
+    padding-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .skills-section-title .badge {
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .skills-section-title .badge.easy {
+    background: #2E7D32;
+    color: #fff;
+  }
+  .skills-section-title .badge.intermediate {
+    background: #F5B942;
+    color: #15161B;
+  }
+  .skills-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .skill-card {
+    background: #1C1D24;
+    border-radius: 12px;
+    padding: 24px;
+    border: 1px solid #2B2D38;
+    scroll-margin-top: 80px; /* Offset for topbar when jumping to ID */
+    transition: transform 0.2s, border-color 0.2s;
+  }
+  .skill-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+  .skill-card h3 {
+    font-size: 20px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .skill-card h3 span {
+    font-size: 14px;
+    color: #8B8D98;
+    font-weight: 500;
+  }
+  .skill-card p {
+    color: #8B8D98;
+    margin-bottom: 16px;
+    font-size: 15px;
+  }
+  .skill-card ul, .skill-card ol {
+    margin-left: 20px;
+    margin-bottom: 16px;
+    color: #8B8D98;
+  }
+  .skill-card li {
+    margin-bottom: 8px;
+    font-size: 14px;
+  }
+  .skill-card strong {
+    color: #F2F1ED;
+  }
+  .skill-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .skill-link:hover {
+    text-decoration: underline;
+  }
 </style>
 <!-- Vercel Web Analytics -->
 <script>
@@ -421,6 +540,7 @@
       <button id="nav-btn-home" role="tab" data-tab="home" class="active" aria-selected="true" aria-controls="tab-home">Home</button>
       <button id="nav-btn-practice" role="tab" data-tab="practice" aria-selected="false" aria-controls="tab-practice">Practice</button>
       <button id="nav-btn-algorithms" role="tab" data-tab="algorithms" aria-selected="false" aria-controls="tab-algorithms">Algorithms</button>
+      <button id="nav-btn-skills" role="tab" data-tab="skills" aria-selected="false" aria-controls="tab-skills">Advanced Skills</button>
     </nav>
   </div>
 </header>
@@ -556,6 +676,154 @@
         <input class="search-input" id="algs-search" placeholder="Search by name or case number…">
       </div>
       <div id="algs-container"></div>
+    </div>
+  </section>
+
+  <!-- ================= ADVANCED SKILLS ================= -->
+  <section class="tab-panel" id="tab-skills" role="tabpanel" aria-labelledby="nav-btn-skills">
+    <h1 class="sr-only">Advanced CFOP Speedcubing Skills & Techniques</h1>
+    <div class="skills-shell">
+      <div class="hero">
+        <div class="eyebrow"><span class="dot"></span>Drop your solve times</div>
+        <h1>Advanced CFOP Skills</h1>
+        <p>Click on any concept in the iceberg image below to jump directly to its definition, explanation, and tutorials.</p>
+      </div>
+
+      <!-- Iceberg Interactive Map -->
+      <div class="iceberg-container">
+        <img class="iceberg-image" src="iceberg.jpg" alt="CFOP Iceberg Chart">
+        
+        <!-- Level 0: Top of Iceberg -->
+        <a href="#tab-practice" class="hotspot" style="top: 6%; left: 26%; width: 14%; height: 5%;">Cross</a>
+        <a href="#tab-practice" class="hotspot" style="top: 11%; left: 38%; width: 12%; height: 5%;">F2L</a>
+        <a href="#tab-practice" class="hotspot" style="top: 9%; left: 52%; width: 14%; height: 5%;">OLL</a>
+        <a href="#tab-practice" class="hotspot" style="top: 1%; left: 45%; width: 14%; height: 5%;">PLL</a>
+
+        <!-- Level 1: Easy -->
+        <a href="#skill-auf" class="hotspot" style="top: 23%; left: 11%; width: 28%; height: 5%;">AUF</a>
+        <a href="#skill-sledge-hedge" class="hotspot" style="top: 22%; left: 49%; width: 22%; height: 5%;">Sledge/Hedge</a>
+        <a href="#skill-keyhole" class="hotspot" style="top: 42%; left: 39%; width: 20%; height: 5%;">Keyhole</a>
+        <a href="#skill-front-slot" class="hotspot" style="top: 23%; left: 49%; width: 22%; height: 5%;">Front Slot</a>
+        <a href="#skill-back-slot" class="hotspot" style="top: 36%; left: 29%; width: 21%; height: 5%;">Back Slot</a>
+
+        <!-- Level 2: Intermediate -->
+        <a href="#skill-2side-pll-recog" class="hotspot" style="top: 32%; left: 57%; width: 34%; height: 5%;">2-side PLL recog</a>
+        <a href="#skill-xcross" class="hotspot" style="top: 29%; left: 37%; width: 18%; height: 5%;">Xcross</a>
+        <a href="#skill-freefop" class="hotspot" style="top: 33%; left: 8%; width: 20%; height: 5%;">Freefop</a>
+        <a href="#skill-2gen" class="hotspot" style="top: 41%; left: 70%; width: 18%; height: 5%;">2GEN</a>
+        <a href="#skill-multislot" class="hotspot" style="top: 49%; left: 54%; width: 22%; height: 5%;">Multislot</a>
+      </div>
+
+      <!-- Detail content sections -->
+      <h2 class="skills-section-title"><span class="badge easy">Easy</span> Most cubers learn these naturally</h2>
+      <div class="skills-grid">
+        <!-- AUF -->
+        <div class="skill-card" id="skill-auf">
+          <h3>1. AUF <span>Adjust U Face</span></h3>
+          <p>AUF stands for <strong>"Adjust U Face"</strong> or <strong>"Adjust Upper Face"</strong>. It is simply performing a U, U', or U2 move after executing your PLL algorithm to align the top layer and complete the solve.</p>
+          <p>You probably already do this without knowing the name. As you get faster, learning to predict the AUF move during the PLL execution will save split seconds.</p>
+        </div>
+
+        <!-- Sledge/Hedge -->
+        <div class="skill-card" id="skill-sledge-hedge">
+          <h3>2. Sledge/Hedge <span>4-Move Triggers</span></h3>
+          <p>These are fast, four-move triggers used frequently in F2L and OLL orientations:</p>
+          <ul>
+            <li><strong>Sledgehammer:</strong> <code>R' F R F'</code></li>
+            <li><strong>Hedgeslammer:</strong> <code>F R' F' R</code></li>
+          </ul>
+          <p>Unlike standard U-move pairings, these triggers use front/side moves, allowing you to insert pairs, change edge orientation, or skip dot cases entirely.</p>
+        </div>
+
+        <!-- Keyhole -->
+        <div class="skill-card" id="skill-keyhole">
+          <h3>3. Keyhole <span>Intuitive F2L Helper</span></h3>
+          <p>Using an empty slot to insert a corner or edge separately. Very intuitive.</p>
+          <p>Instead of pairing a corner and an edge together in the top layer and inserting them as a block, Keyhole solves one piece while utilizing an unsolved "empty" slot to avoid disturbing the rest of the cube.</p>
+          <p><strong>How it works:</strong> Normally, if you want to insert an F2L edge into its slot without messing up the corners you already solved, you have to do a multi-move algorithm. With Keyhole, you look for a case where either the corner is already solved in the bottom slot (but the edge is missing), or the edge is already solved (but the corner is missing).</p>
+          <p><strong>Step by step:</strong></p>
+          <ol>
+            <li><strong>Open the "Keyhole":</strong> You temporarily rotate the bottom layer (using a D, D', or D2 move) so that an unsolved/empty slot is directly underneath where the target corner/edge needs to go.</li>
+            <li><strong>Insert the piece:</strong> Since the slot underneath is empty, you can do a simple 1-to-3 move sequence (like <code>R U' R'</code> or <code>F' U F</code>) to drop the target piece into place without worrying about breaking a solved corner.</li>
+            <li><strong>Close the "Keyhole":</strong> You rotate the bottom layer back (reversing your D move). The corner and the edge are now perfectly paired and solved.</li>
+          </ol>
+          <p>This method is the foundation of Pseudoslotting which is much more advanced.</p>
+          <a class="skill-link" href="https://www.youtube.com/watch?v=kYJmQz1Z2Fk" target="_blank">📺 Watch J Perm's Keyhole &amp; Pseudoslotting Tutorial &rarr;</a>
+        </div>
+
+        <!-- Front Slot -->
+        <div class="skill-card" id="skill-front-slot">
+          <h3>4. Front Slot <span>F2L Insertion</span></h3>
+          <p>This is as simple as its name suggests: inserting F2L pairs into the two front slots (Front-Right and Front-Left) directly from your home grip.</p>
+          <p>Familiarity with front slots helps you recognize cases instantly without rotating the cube to see where they go.</p>
+        </div>
+
+        <!-- Back Slot -->
+        <div class="skill-card" id="skill-back-slot">
+          <h3>5. Back Slot <span>Blind F2L Insertion</span></h3>
+          <p>Similar to front slots, but now we insert the two pairs into the back slots (Back-Right and Back-Left). Cubers choose to do back slots or front slots based on their preference and case recognition.</p>
+          <p>Solving into the back slots first is a critical habit because it keeps the unsolved slots in the front, giving you a clear view of the remaining pieces without cube rotations.</p>
+        </div>
+      </div>
+
+      <h2 class="skills-section-title"><span class="badge intermediate">Intermediate</span> Separates 20s solvers from 15s solvers</h2>
+      <div class="skills-grid">
+        <!-- 2-side PLL recog -->
+        <div class="skill-card" id="skill-2side-pll-recog">
+          <h3>1. 2-Side PLL Recognition <span>No-Rotation Recog</span></h3>
+          <p>Recognizing which PLL case it is by looking at only two adjacent sides of the top layer instead of spinning the cube around or rotating it. This saves up to 1 second per solve.</p>
+          <p>By observing headlights, matching blocks, and opposite colors on two faces, you can immediately determine the correct PLL case and its exact AUF alignment.</p>
+          <a class="skill-link" href="https://www.youtube.com/watch?v=S4f2v9J9N4E" target="_blank">📺 Watch J Perm's Advanced PLL Recognition Tutorial &rarr;</a>
+        </div>
+
+        <!-- XCross -->
+        <div class="skill-card" id="skill-xcross">
+          <h3>2. Xcross <span>Extended Cross</span></h3>
+          <p>Solving the cross and one F2L pair at the same time during your first moves. Requires planning during inspection.</p>
+          <p>Similarly, we call <strong>XXcross</strong> for a cross and two pairs of F2L, and <strong>XXXcross</strong> for a cross and three pairs of F2L, but these cases are extremely rare.</p>
+          <a class="skill-link" href="https://www.youtube.com/watch?v=f252G3fD6Jk" target="_blank">📺 View 25 Extended Cross Example Solves &rarr;</a>
+        </div>
+
+        <!-- Freefop -->
+        <div class="skill-card" id="skill-freefop">
+          <h3>3. Freefop <span>Freestyle F2L</span></h3>
+          <p>"Freestyle" F2L, where you solve whatever is easy first for the sake of efficiency.</p>
+          <p>For example, if you see an F2L pair is already solved in the scramble, you can solve 3 edges of the cross, insert the pre-solved F2L pair, and then complete your cross. This keeps your move counts low and solves fluid.</p>
+          <a class="skill-link" href="https://www.youtube.com/watch?v=F0k9U13z-1E" target="_blank">📺 Watch 5 FREEFOP Example Solves Tutorial &rarr;</a>
+        </div>
+
+        <!-- 2GEN -->
+        <div class="skill-card" id="skill-2gen">
+          <h3>4. 2GEN <span>2-Generator Algorithms</span></h3>
+          <p>Solving using only <code>R</code> and <code>U</code> moves. This forces you to avoid rotations, reduce regrips, and become highly efficient.</p>
+          <p><strong>Why Cubers Love 2GEN:</strong></p>
+          <ul>
+            <li><strong>Extreme Speed (Fingertricks):</strong> Because your hands never have to leave the home grip position to rotate the cube or reach for awkward faces (like F or B), 2GEN algorithms are the fastest in the world. You can execute them at insane speeds (often over 10 turns per second).</li>
+            <li><strong>No Rotations:</strong> A true 2GEN solve requires zero cube rotations (y or y' moves). Your left hand stabilizes the cube while your right hand and index fingers do all the work.</li>
+            <li><strong>Smooth Recognition:</strong> Since pieces only move between the top layer and the right slot, it is much easier to track where pieces are going.</li>
+          </ul>
+          <p><strong>Where is 2GEN used?</strong></p>
+          <ul>
+            <li><strong>F2L Practice:</strong> Cubers will do "2GEN F2L" drills (solving only the Front-Right and Back-Right slots using only R and U moves) to train their right-hand speed and lookahead.</li>
+            <li><strong>Last Layer Algorithms:</strong> Many of the best, most popular OLL and PLL algorithms are intentionally chosen because they are 2GEN (or mostly 2GEN). For example, the famous Sune OLL algorithm (R U R' U R U2 R') is purely 2GEN.</li>
+            <li><strong>Subsets (e.g., 2GLL):</strong> This is a subset of ZBLL where the last layer is solved using only R and U moves once the edges are oriented.</li>
+          </ul>
+        </div>
+
+        <!-- Multislot -->
+        <div class="skill-card" id="skill-multislot">
+          <h3>5. Multislot <span>Double Slotting</span></h3>
+          <p>Solving 2 F2L pairs at the same time. Very hard to see but saves significant time.</p>
+          <p><strong>How to Practice It:</strong> Multislotting requires excellent lookahead. To start learning:</p>
+          <ol>
+            <li>Solve your cross.</li>
+            <li>Go slow. When you find your first F2L pair, do not solve it immediately.</li>
+            <li>Look around the cube for a second pair. Try to track where the second pair's pieces will end up when you insert the first pair.</li>
+            <li>Try to find a way to insert the first pair that makes the second pair easier.</li>
+          </ol>
+          <a class="skill-link" href="https://www.youtube.com/watch?v=kYJmQz1Z2Fk" target="_blank">📺 Watch Advanced F2L: Multislotting with Keyhole &amp; Pseudoslotting &rarr;</a>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -754,6 +1022,19 @@ document.getElementById('top-nav').addEventListener('click', e=>{
 document.querySelectorAll('[data-goto]').forEach(el=>{
   el.addEventListener('click', ()=> setActiveTab(el.dataset.goto));
 });
+
+// Interactive Hotspot Scroll & Tab Navigation Helper
+document.body.addEventListener('click', e => {
+  const hotspot = e.target.closest('.hotspot');
+  if (!hotspot) return;
+  const href = hotspot.getAttribute('href');
+  if (href && href.startsWith('#tab-')) {
+    e.preventDefault();
+    const tabName = href.replace('#tab-', '');
+    setActiveTab(tabName);
+  }
+});
+
 function setActiveTab(tab){
   document.querySelectorAll('.top-nav button').forEach(b=> {
     const active = b.dataset.tab===tab;
@@ -771,6 +1052,9 @@ function setActiveTab(tab){
   } else if (tab === 'algorithms') {
     title = "CFOP F2L, OLL & PLL Algorithm Reference — Solved / Advanced";
     description = "Browse the complete database of 41 F2L, 57 OLL, and 21 PLL speedcubing algorithms, complete with interactive 3D visual cube states.";
+  } else if (tab === 'skills') {
+    title = "Advanced CFOP Skills & Techniques — Solved / Advanced";
+    description = "Explore key speedcubing techniques like Keyhole, Xcross, Multislotting, and 2-Side PLL recognition to drop your solve times.";
   }
   
   document.title = title;
