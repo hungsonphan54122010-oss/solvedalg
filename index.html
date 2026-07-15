@@ -1367,7 +1367,7 @@ function resetTrainerDisplay(){
   document.getElementById('solution-display').parentElement.classList.remove('revealed');
   
   document.getElementById('xcross-solution-display').textContent = '';
-  document.getElementById('xcross-solution-display').parentElement.classList.remove('revealed');
+  document.getElementById('xcross-solution-display').classList.remove('revealed');
   document.getElementById('btn-xcross-reveal').textContent = 'Show Solution';
   
   document.getElementById('pll-feedback').textContent = '';
@@ -1474,7 +1474,7 @@ function loadNewXcrossCase() {
   
   const solDisplay = document.getElementById('xcross-solution-display');
   solDisplay.textContent = `Solution Moves: ${currentCase.solution}\n\nWalkthrough:\n${currentCase.explanation}`;
-  solDisplay.parentElement.classList.remove('revealed');
+  solDisplay.classList.remove('revealed');
   document.getElementById('btn-xcross-reveal').textContent = 'Show Solution';
   
   const imgWrapper = document.getElementById('trainer-img-wrapper');
@@ -1529,7 +1529,7 @@ function loadNewPLL2SideCase() {
 document.getElementById('btn-xcross-new').addEventListener('click', loadNewXcrossCase);
 document.getElementById('btn-xcross-reveal').addEventListener('click', () => {
   const sol = document.getElementById('xcross-solution-display');
-  const revealed = sol.parentElement.classList.toggle('revealed');
+  const revealed = sol.classList.toggle('revealed');
   document.getElementById('btn-xcross-reveal').textContent = revealed ? 'Hide Solution' : 'Show Solution';
 });
 
