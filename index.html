@@ -524,6 +524,36 @@
   .skill-link:hover {
     text-decoration: underline;
   }
+  .choice-btn {
+    background: #1C1D24;
+    border: 1px solid #2B2D38;
+    color: #F2F1ED;
+    padding: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+    font-family: inherit;
+    font-size: 15px;
+  }
+  .choice-btn:hover:not(:disabled) {
+    border-color: var(--accent);
+    background: #252630;
+  }
+  .choice-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.8;
+  }
+  .choice-btn.correct {
+    background: #2E7D32 !important;
+    border-color: #2E7D32 !important;
+    color: #fff !important;
+  }
+  .choice-btn.incorrect {
+    background: #C62828 !important;
+    border-color: #C62828 !important;
+    color: #fff !important;
+  }
 </style>
 <!-- Vercel Web Analytics -->
 <script>
@@ -621,6 +651,8 @@
         <button class="sub-tab-btn active" data-set="OLL">OLL Trainer</button>
         <button class="sub-tab-btn" data-set="PLL">PLL Trainer</button>
         <button class="sub-tab-btn" data-set="F2L">F2L Trainer</button>
+        <button class="sub-tab-btn" data-set="XCross">XCross Trainer</button>
+        <button class="sub-tab-btn" data-set="PLL2Side">2-Side PLL Recog</button>
       </div>
 
       <div class="practice-grid">
@@ -636,27 +668,58 @@
             <img id="trainer-case-image" src="" alt="Cube State">
           </div>
 
-          <div class="scramble-box">
+          <div class="scramble-box" id="scramble-box">
             <div class="alg-row" id="scramble-display"><span class="pill neutral">Press "New scramble" to begin</span></div>
+            <div id="hold-info-display" style="display: none; margin-top: 12px; color: #8B8D98; font-size: 14px; text-align: left; padding: 12px; background: #15161B; border-radius: 6px; border: 1px dashed #2B2D38; line-height: 1.5;"></div>
           </div>
 
-          <div class="timer-display" id="timer-display">0.00</div>
+          <!-- Timer Container (OLL/PLL/F2L) -->
+          <div id="timer-container">
+            <div class="timer-display" id="timer-display">0.00</div>
 
-          <div class="trainer-controls">
-            <button class="tbtn primary" id="btn-new-scramble">New scramble</button>
-            <button class="tbtn" id="btn-timer-toggle">Start timer</button>
-            <button class="tbtn" id="btn-reveal">Show algorithm</button>
+            <div class="trainer-controls" id="timer-controls-row">
+              <button class="tbtn primary" id="btn-new-scramble">New scramble</button>
+              <button class="tbtn" id="btn-timer-toggle">Start timer</button>
+              <button class="tbtn" id="btn-reveal">Show algorithm</button>
+            </div>
+
+            <div class="solution-reveal" id="timer-solution-row">
+              <div class="trainer-case-label">Solution</div>
+              <div class="alg-row blur-hint" id="solution-display"></div>
+            </div>
+
+            <div class="stats-row" id="timer-stats-row">
+              <div class="stat-mini"><div class="n" id="stat-count">0</div><div class="l">Solves</div></div>
+              <div class="stat-mini"><div class="n" id="stat-best">—</div><div class="l">Best</div></div>
+              <div class="stat-mini"><div class="n" id="stat-avg">—</div><div class="l">Average</div></div>
+            </div>
           </div>
 
-          <div class="solution-reveal">
-            <div class="trainer-case-label">Solution</div>
-            <div class="alg-row blur-hint" id="solution-display"></div>
+          <!-- XCross Practice Controls (No Timer) -->
+          <div id="xcross-controls" style="display: none; margin-top: 16px;">
+            <div class="trainer-controls">
+              <button class="tbtn primary" id="btn-xcross-new">New scramble</button>
+              <button class="tbtn" id="btn-xcross-reveal">Show Solution</button>
+            </div>
+            <div class="solution-reveal" style="margin-top: 16px;">
+              <div class="trainer-case-label">Walkthrough Solution</div>
+              <div class="alg-row blur-hint" id="xcross-solution-display" style="text-align: left; line-height: 1.6; white-space: pre-line;"></div>
+            </div>
           </div>
 
-          <div class="stats-row">
-            <div class="stat-mini"><div class="n" id="stat-count">0</div><div class="l">Solves</div></div>
-            <div class="stat-mini"><div class="n" id="stat-best">—</div><div class="l">Best</div></div>
-            <div class="stat-mini"><div class="n" id="stat-avg">—</div><div class="l">Average</div></div>
+          <!-- 2-Side PLL Recognition Choices -->
+          <div id="pll2side-controls" style="display: none; margin-top: 24px;">
+            <div class="trainer-case-label" style="margin-bottom: 12px;">Identify the PLL Case</div>
+            <div class="choices-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px;">
+              <button class="choice-btn" id="choice-0"></button>
+              <button class="choice-btn" id="choice-1"></button>
+              <button class="choice-btn" id="choice-2"></button>
+              <button class="choice-btn" id="choice-3"></button>
+            </div>
+            <div id="pll-feedback" style="margin-top: 16px; font-weight: 600; text-align: center; height: 24px; font-size: 15px;"></div>
+            <div style="text-align: center; margin-top: 16px;">
+              <button class="tbtn primary" id="btn-pll2side-next">Next Case</button>
+            </div>
           </div>
         </div>
       </div>
@@ -773,7 +836,10 @@
           <h3>1. 2-Side PLL Recognition <span>No-Rotation Recog</span></h3>
           <p>Recognizing which PLL case it is by looking at only two adjacent sides of the top layer instead of spinning the cube around or rotating it. This saves up to 1 second per solve.</p>
           <p>By observing headlights, matching blocks, and opposite colors on two faces, you can immediately determine the correct PLL case and its exact AUF alignment.</p>
-          <a class="skill-link" href="https://www.youtube.com/watch?v=S4f2v9J9N4E" target="_blank">📺 Watch J Perm's Advanced PLL Recognition Tutorial &rarr;</a>
+          <div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center; margin-top: 12px;">
+            <a class="skill-link" href="https://www.youtube.com/watch?v=S4f2v9J9N4E" target="_blank">📺 Watch J Perm's Advanced PLL Recognition Tutorial &rarr;</a>
+            <button class="tbtn primary mini-practice-btn" data-practice-set="PLL2Side" style="padding: 6px 12px; font-size: 13px; border-radius: 4px; cursor: pointer;">🎯 Practice 2-Side Recog</button>
+          </div>
         </div>
 
         <!-- XCross -->
@@ -781,7 +847,10 @@
           <h3>2. Xcross <span>Extended Cross</span></h3>
           <p>Solving the cross and one F2L pair at the same time during your first moves. Requires planning during inspection.</p>
           <p>Similarly, we call <strong>XXcross</strong> for a cross and two pairs of F2L, and <strong>XXXcross</strong> for a cross and three pairs of F2L, but these cases are extremely rare.</p>
-          <a class="skill-link" href="https://www.youtube.com/watch?v=f252G3fD6Jk" target="_blank">📺 View 25 Extended Cross Example Solves &rarr;</a>
+          <div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center; margin-top: 12px;">
+            <a class="skill-link" href="https://www.youtube.com/watch?v=f252G3fD6Jk" target="_blank">📺 View 25 Extended Cross Example Solves &rarr;</a>
+            <button class="tbtn primary mini-practice-btn" data-practice-set="XCross" style="padding: 6px 12px; font-size: 13px; border-radius: 4px; cursor: pointer;">🎯 Practice XCross</button>
+          </div>
         </div>
 
         <!-- Freefop -->
@@ -1094,13 +1163,13 @@ homeStats.forEach(s=>{
    PRACTICE — state
    ============================================================ */
 let practiceSet = 'OLL';
-let selected = { OLL: new Set(), PLL: new Set(), F2L: new Set() };
+let selected = { OLL: new Set(), PLL: new Set(), F2L: new Set(), XCross: new Set(), PLL2Side: new Set() };
 let currentCase = null;
 let currentScramble = '';
 let timerRunning = false;
 let timerStart = 0;
 let timerRAF = null;
-let times = { OLL: [], PLL: [], F2L: [] };
+let times = { OLL: [], PLL: [], F2L: [], XCross: [], PLL2Side: [] };
 
 function caseKey(c, type){ return (type === 'OLL' || type === 'F2L') ? c.num : c.id; }
 function loadSelection(type){
@@ -1111,19 +1180,91 @@ function loadSelection(type){
   const cases = type === 'OLL' ? OLL_CASES : (type === 'PLL' ? PLL_CASES : F2L_CASES);
   const all = cases.map(c=>caseKey(c,type));
   return new Set(all);
-}
-function saveSelection(type){
-  try{ localStorage.setItem('solved-adv-selected-'+type, JSON.stringify([...selected[type]])); }catch(e){}
-}
 selected.OLL = loadSelection('OLL');
 selected.PLL = loadSelection('PLL');
 selected.F2L = loadSelection('F2L');
 
+/* ============================================================
+   XCROSS & PLL 2-SIDE DATASETS
+   ============================================================ */
+const XCROSS_CASES = [
+  {
+    num: 1,
+    name: "CubeSkills #1 - Blue/Orange F2L",
+    scramble: "F' D2 B2 R B2 L U2 L R B2 U' R D L' D' R D2 L2 F",
+    solution: "y D' L R' B' R' D",
+    crossColor: "Yellow (Cross on D)",
+    holding: "Hold the cube with Green in front, White on top. Then rotate the whole cube: y (turn so Orange is in front, White on top) before scrambling and solving.",
+    explanation: "This solves the yellow cross while simultaneously pairing and inserting the blue-orange F2L pair into the Back-Right slot."
+  },
+  {
+    num: 2,
+    name: "CubeSkills #3 - Red/Blue F2L",
+    scramble: "F U2 B2 L2 U2 F' D2 F' L2 U2 L F U' B R' U' L R F'",
+    solution: "x' y2 D' R2 L2' D'",
+    crossColor: "Yellow (Cross on F)",
+    holding: "Hold the cube with Green in front, White on top. Then rotate the whole cube: x' y2 (turn so Green is on top, Yellow in front) before scrambling and solving.",
+    explanation: "A highly efficient 4-move Xcross on Yellow that places the solved Red-Blue pair directly into the Back-Left slot."
+  },
+  {
+    num: 3,
+    name: "CubeSkills #7 - Red/Green F2L",
+    scramble: "L' D2 R' B2 L R2 B2 R' D2 R' D L2 B' R B' U2 F R' B2 R2",
+    solution: "x R D' R' U R L F",
+    crossColor: "Yellow (Cross on B)",
+    holding: "Hold the cube with Green in front, White on top. Then rotate the whole cube: x (turn so White is in front, Yellow on top) before scrambling and solving.",
+    explanation: "Solves the Yellow cross while pairing and inserting the Red-Green F2L pair into the Back-Right slot."
+  },
+  {
+    num: 4,
+    name: "CubeSkills #11 - Keyhole Xcross",
+    scramble: "B2 U R2 B2 L2 U' F2 D U2 B2 L F' U' L D2 L' B U2 L' B'",
+    solution: "z' y' D2 R' D R L U' L' D'",
+    crossColor: "White (Cross on L)",
+    holding: "Hold the cube with Green in front, White on top. Then rotate the whole cube: z' y' (turn so Orange is on top, Yellow in front) before scrambling and solving.",
+    explanation: "A classic keyhole Xcross. It inserts the F2L corner first, then uses a keyhole move to drop the edge in, completing the cross and the first slot simultaneously."
+  },
+  {
+    num: 5,
+    name: "Intuitive White Xcross - Blue/Red F2L",
+    scramble: "D2 B2 R2 U2 L2 U2 F' R2 B F D' R B L2 B D2 U' L' F D'",
+    solution: "U' L2 F' R D L' D2",
+    crossColor: "White (Cross on Bottom)",
+    holding: "Hold the cube with Green in front, White on bottom. No rotations needed.",
+    explanation: "Pairs the Red-Blue corner and edge in the top layer, then solves the white cross edges, inserting the pair into the Back-Left slot."
+  }
+];
+
+const PLL_2SIDE_CASES = [
+  { id: "T", name: "T Perm", alg: "R U R' U' R' F R2 U' R' U' R U R' F'", options: ["T Perm", "Y Perm", "F Perm", "Jb Perm"] },
+  { id: "Y", name: "Y Perm", alg: "F R U' R' U' R U R' F' R U R' U' R' F R F'", options: ["Y Perm", "T Perm", "V Perm", "E Perm"] },
+  { id: "F", name: "F Perm", alg: "R' U' F' R U R' U' R' F R2 U' R' U' R U R' U R", options: ["F Perm", "T Perm", "Jb Perm", "Ra Perm"] },
+  { id: "Ua", name: "Ua Perm", alg: "M2 U M' U2 M U M2", options: ["Ua Perm", "Ub Perm", "Z Perm", "H Perm"] },
+  { id: "Ub", name: "Ub Perm", alg: "M2 U' M' U2 M U' M2", options: ["Ub Perm", "Ua Perm", "Z Perm", "H Perm"] },
+  { id: "Aa", name: "Aa Perm", alg: "x R' U R' D2 R U' R' D2 R2 x'", options: ["Aa Perm", "Ab Perm", "E Perm", "V Perm"] },
+  { id: "Ab", name: "Ab Perm", alg: "y' x R2 D2 R U R' D2 R U' R x'", options: ["Ab Perm", "Aa Perm", "E Perm", "Ga Perm"] },
+  { id: "Jb", name: "Jb Perm", alg: "R U R' F' R U R' U' R' F R2 U' R' U'", options: ["Jb Perm", "Ja Perm", "T Perm", "F Perm"] },
+  { id: "H", name: "H Perm", alg: "M2 U M2 U2 M2 U M2", options: ["H Perm", "Z Perm", "Ua Perm", "Ub Perm"] },
+  { id: "Z", name: "Z Perm", alg: "M2 U2 M U' M2 U' M2 U' M", options: ["Z Perm", "H Perm", "Ua Perm", "Ub Perm"] }
+];
+
 function renderCasePicker(){
-  const cases = practiceSet === 'OLL' ? OLL_CASES : (practiceSet === 'PLL' ? PLL_CASES : F2L_CASES);
-  const groupOrder = practiceSet === 'OLL' ? OLL_GROUP_ORDER : (practiceSet === 'PLL' ? PLL_GROUP_ORDER : F2L_GROUP_ORDER);
   const el = document.getElementById('case-picker');
   el.innerHTML = '';
+  
+  if (practiceSet === 'XCross' || practiceSet === 'PLL2Side') {
+    el.innerHTML = `
+      <div style="padding: 24px; color: #8B8D98; text-align: center; font-size: 14px; line-height: 1.5; border: 1px dashed #2B2D38; border-radius: 8px; margin: 12px;">
+        <div style="font-size: 24px; margin-bottom: 12px;">🎯</div>
+        <strong>${practiceSet === 'XCross' ? 'XCross Walkthroughs' : 'PLL Recognition'}</strong><br>
+        This training mode runs as a continuous sequence of cases. Follow the interactive controls on the right panel!
+      </div>
+    `;
+    return;
+  }
+
+  const cases = practiceSet === 'OLL' ? OLL_CASES : (practiceSet === 'PLL' ? PLL_CASES : F2L_CASES);
+  const groupOrder = practiceSet === 'OLL' ? OLL_GROUP_ORDER : (practiceSet === 'PLL' ? PLL_GROUP_ORDER : F2L_GROUP_ORDER);
 
   const head = document.createElement('div');
   head.className = 'picker-head';
@@ -1169,19 +1310,33 @@ function renderCasePicker(){
   });
 }
 
-document.getElementById('practice-subtabs').addEventListener('click', e=>{
-  const btn = e.target.closest('button[data-set]');
-  if(!btn) return;
-  practiceSet = btn.dataset.set;
-  document.querySelectorAll('#practice-subtabs .sub-tab-btn').forEach(b=>b.classList.toggle('active', b===btn));
+function setPracticeSet(set) {
+  practiceSet = set;
+  document.querySelectorAll('#practice-subtabs .sub-tab-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.set === set);
+  });
   renderCasePicker();
   resetTrainerDisplay();
   renderStats();
+  
+  if (set === 'XCross') {
+    loadNewXcrossCase();
+  } else if (set === 'PLL2Side') {
+    loadNewPLL2SideCase();
+  }
+}
+
+document.body.addEventListener('click', e => {
+  const btn = e.target.closest('.mini-practice-btn');
+  if (!btn) return;
+  const set = btn.dataset.practiceSet;
+  setActiveTab('practice');
+  setPracticeSet(set);
 });
 
 function resetTrainerDisplay(){
   currentCase = null; currentScramble = '';
-  document.getElementById('trainer-case-label').textContent = practiceSet + ' case';
+  document.getElementById('trainer-case-label').textContent = practiceSet === 'XCross' ? 'XCross Case' : (practiceSet === 'PLL2Side' ? '2-Side PLL Recog' : practiceSet + ' case');
   document.getElementById('trainer-case-name').textContent = '—';
   
   const imgWrapper = document.getElementById('trainer-img-wrapper');
@@ -1191,9 +1346,23 @@ function resetTrainerDisplay(){
     imgEl.src = '';
   }
 
+  document.getElementById('scramble-box').style.display = practiceSet === 'PLL2Side' ? 'none' : 'block';
+  document.getElementById('hold-info-display').style.display = 'none';
+  document.getElementById('timer-container').style.display = (practiceSet === 'XCross' || practiceSet === 'PLL2Side') ? 'none' : 'block';
+  document.getElementById('xcross-controls').style.display = practiceSet === 'XCross' ? 'block' : 'none';
+  document.getElementById('pll2side-controls').style.display = practiceSet === 'PLL2Side' ? 'block' : 'none';
+
   document.getElementById('scramble-display').innerHTML = '<span class="pill neutral">Press "New scramble" to begin</span>';
   document.getElementById('solution-display').innerHTML = '';
   document.getElementById('solution-display').parentElement.classList.remove('revealed');
+  
+  document.getElementById('xcross-solution-display').textContent = '';
+  document.getElementById('xcross-solution-display').parentElement.classList.remove('revealed');
+  document.getElementById('btn-xcross-reveal').textContent = 'Show Solution';
+  
+  document.getElementById('pll-feedback').textContent = '';
+  document.getElementById('pll-feedback').className = '';
+  
   stopTimer(false);
   document.getElementById('timer-display').textContent = '0.00';
 }
@@ -1269,10 +1438,92 @@ document.getElementById('btn-timer-toggle').addEventListener('click', ()=>{
 
 function renderStats(){
   const t = times[practiceSet];
-  document.getElementById('stat-count').textContent = t.length;
-  document.getElementById('stat-best').textContent = t.length ? Math.min(...t).toFixed(2) : '—';
-  document.getElementById('stat-avg').textContent = t.length ? (t.reduce((a,b)=>a+b,0)/t.length).toFixed(2) : '—';
+  const countEl = document.getElementById('stat-count');
+  const bestEl = document.getElementById('stat-best');
+  const avgEl = document.getElementById('stat-avg');
+  
+  if (!t || !countEl) return;
+  countEl.textContent = t.length;
+  bestEl.textContent = t.length ? Math.min(...t).toFixed(2) : '—';
+  avgEl.textContent = t.length ? (t.reduce((a,b)=>a+b,0)/t.length).toFixed(2) : '—';
 }
+
+/* ============================================================
+   XCROSS & PLL 2-SIDE HELPERS & EVENT LISTENERS
+   ============================================================ */
+function loadNewXcrossCase() {
+  currentCase = XCROSS_CASES[Math.floor(Math.random() * XCROSS_CASES.length)];
+  document.getElementById('trainer-case-label').textContent = `Xcross Case #${currentCase.num}`;
+  document.getElementById('trainer-case-name').textContent = currentCase.name;
+  
+  renderAlg(document.getElementById('scramble-display'), currentCase.scramble);
+  
+  const holdDisplay = document.getElementById('hold-info-display');
+  holdDisplay.innerHTML = `<strong>Cross Color:</strong> ${currentCase.crossColor}<br><br><strong>Holding:</strong> ${currentCase.holding}`;
+  holdDisplay.style.display = 'block';
+  
+  const solDisplay = document.getElementById('xcross-solution-display');
+  solDisplay.textContent = `Solution Moves: ${currentCase.solution}\n\nWalkthrough:\n${currentCase.explanation}`;
+  solDisplay.parentElement.classList.remove('revealed');
+  document.getElementById('btn-xcross-reveal').textContent = 'Show Solution';
+  
+  const imgWrapper = document.getElementById('trainer-img-wrapper');
+  if (imgWrapper) imgWrapper.style.display = 'none';
+}
+
+function loadNewPLL2SideCase() {
+  currentCase = PLL_2SIDE_CASES[Math.floor(Math.random() * PLL_2SIDE_CASES.length)];
+  document.getElementById('trainer-case-label').textContent = 'Identify Case';
+  document.getElementById('trainer-case-name').textContent = '—';
+  
+  const imgWrapper = document.getElementById('trainer-img-wrapper');
+  const imgEl = document.getElementById('trainer-case-image');
+  if (imgWrapper && imgEl) {
+    const encodedAlg = encodeURIComponent(currentCase.alg);
+    imgEl.src = `https://visualcube.api.cubing.net/visualcube.php?fmt=svg&size=200&stage=pll&case=${encodedAlg}`;
+    imgWrapper.style.display = 'flex';
+  }
+
+  const choices = [...currentCase.options];
+  choices.sort(() => Math.random() - 0.5);
+
+  for (let i = 0; i < 4; i++) {
+    const btn = document.getElementById(`choice-${i}`);
+    btn.textContent = choices[i];
+    btn.className = 'choice-btn';
+    btn.disabled = false;
+    btn.onclick = () => {
+      for (let j = 0; j < 4; j++) {
+        document.getElementById(`choice-${j}`).disabled = true;
+      }
+      if (choices[i] === currentCase.name) {
+        btn.classList.add('correct');
+        document.getElementById('pll-feedback').textContent = 'Correct! 🎉';
+        document.getElementById('pll-feedback').style.color = '#2E7D32';
+      } else {
+        btn.classList.add('incorrect');
+        document.getElementById('pll-feedback').textContent = `Wrong! It is ${currentCase.name}.`;
+        document.getElementById('pll-feedback').style.color = '#C62828';
+        for (let j = 0; j < 4; j++) {
+          const b = document.getElementById(`choice-${j}`);
+          if (b.textContent === currentCase.name) {
+            b.classList.add('correct');
+          }
+        }
+      }
+    };
+  }
+  document.getElementById('pll-feedback').textContent = '';
+}
+
+document.getElementById('btn-xcross-new').addEventListener('click', loadNewXcrossCase);
+document.getElementById('btn-xcross-reveal').addEventListener('click', () => {
+  const sol = document.getElementById('xcross-solution-display');
+  const revealed = sol.parentElement.classList.toggle('revealed');
+  document.getElementById('btn-xcross-reveal').textContent = revealed ? 'Hide Solution' : 'Show Solution';
+});
+
+document.getElementById('btn-pll2side-next').addEventListener('click', loadNewPLL2SideCase);
 
 /* ============================================================
    ALGORITHMS TAB
