@@ -1338,6 +1338,12 @@ document.body.addEventListener('click', e => {
   setPracticeSet(set);
 });
 
+document.getElementById('practice-subtabs').addEventListener('click', e=>{
+  const btn = e.target.closest('button[data-set]');
+  if(!btn) return;
+  setPracticeSet(btn.dataset.set);
+});
+
 function resetTrainerDisplay(){
   currentCase = null; currentScramble = '';
   document.getElementById('trainer-case-label').textContent = practiceSet === 'XCross' ? 'XCross Case' : (practiceSet === 'PLL2Side' ? '2-Side PLL Recog' : practiceSet + ' case');
