@@ -1180,6 +1180,10 @@ function loadSelection(type){
   const cases = type === 'OLL' ? OLL_CASES : (type === 'PLL' ? PLL_CASES : F2L_CASES);
   const all = cases.map(c=>caseKey(c,type));
   return new Set(all);
+}
+function saveSelection(type){
+  try{ localStorage.setItem('solved-adv-selected-'+type, JSON.stringify([...selected[type]])); }catch(e){}
+}
 selected.OLL = loadSelection('OLL');
 selected.PLL = loadSelection('PLL');
 selected.F2L = loadSelection('F2L');
