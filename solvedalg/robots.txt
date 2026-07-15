@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://solvedalg.vercel.app/sitemap.xml
