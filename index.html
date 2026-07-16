@@ -101,12 +101,13 @@
   }
   .logo .tier{ color:var(--muted); font-weight:500; font-size:13px; margin-left:2px;}
   .top-nav{display:flex; gap:4px; background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:4px;}
-  .top-nav button{
+  .top-nav button, .top-nav .nav-link{
     border:none; background:transparent; color:var(--muted); font-size:14px; font-weight:600;
     padding:8px 16px; border-radius:7px; cursor:pointer; transition:background .15s, color .15s;
+    text-decoration:none; display:inline-block;
   }
   .top-nav button.active{ background:var(--accent); color:#1A1305; }
-  .top-nav button:not(.active):hover{ color:var(--ink); }
+  .top-nav button:not(.active):hover, .top-nav .nav-link:hover{ color:var(--ink); }
 
   main{max-width:1180px; margin:0 auto; padding:0 24px 100px;}
   .tab-panel{display:none;}
@@ -573,6 +574,7 @@
       <button id="nav-btn-practice" role="tab" data-tab="practice" aria-selected="false" aria-controls="tab-practice">Practice</button>
       <button id="nav-btn-algorithms" role="tab" data-tab="algorithms" aria-selected="false" aria-controls="tab-algorithms">Algorithms</button>
       <button id="nav-btn-skills" role="tab" data-tab="skills" aria-selected="false" aria-controls="tab-skills">Advanced Skills</button>
+      <a href="/guides.html" class="nav-link">Guides</a>
     </nav>
   </div>
 </header>
@@ -903,6 +905,8 @@
 <footer>
   <span>Solved / Advanced — recognition first, speed second.</span>
   <div class="footer-links">
+    <a href="/guides.html">Guides</a>
+    <span>·</span>
     <a href="/privacy.html" target="_blank">Privacy Policy</a>
     <span>·</span>
     <a href="/terms.html" target="_blank">Terms of Service</a>
